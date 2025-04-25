@@ -1,0 +1,50 @@
+.dashboard-layout {
+  display: flex;
+}
+
+.sidebar {
+  height: 100vh;
+  background-color: #fff;
+  color: #000000;
+  box-shadow: 5px 0px 10px 0px #c9c9c9;
+  width: 200px;
+  .logo{
+    border-bottom: 1px solid #999;
+    img{
+    margin: 10px 0 0 10px;
+      width: 40px;
+    }
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+
+    li a {
+      color: #333;
+      text-decoration: none;
+      display: block;
+      padding: 10px 10px;
+      transition: 0.5s all;
+
+      &:hover {
+        background-color: #FFD700;
+        transition: 0.5s all;
+      }
+
+      span {
+        margin-left: 10px;
+      }
+    }
+
+    .active-menu {
+      background-color: #FFD700;
+    }
+  }
+}
+
+
+.main-content {
+  flex-grow: 1;
+  padding: 0 1rem;
+}
