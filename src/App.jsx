@@ -10,7 +10,7 @@ import NotFound from './pages/NotFound';
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/rtteches">
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
