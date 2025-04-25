@@ -1,0 +1,46 @@
+/* css for loginRegister */
+.loginRegister {
+    background-image: linear-gradient(to top left, #b2c5f9, #f6f5ff);
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .LRContainer {
+        box-shadow: 0 0 10px 0 #999;
+        border-radius: 10px;
+        width: fit-content;
+        margin: auto;
+        background-color: #f6f5ff;
+        padding: 30px;
+
+        .btns {
+            text-align: center;
+
+            .btn {
+                background-color: #fff;
+                border: none;
+                width: 100px;
+                padding: 10px;
+                cursor: pointer;
+
+                &:first-child {
+                    box-shadow: 0px 0 10px 0 #999;
+                    border-top-left-radius: 10px;
+                    border-bottom-left-radius: 10px;
+                }
+
+                &:last-child {
+                    box-shadow: 7px 0 10px 0 #999;
+                    border-top-right-radius: 10px;
+                    border-bottom-right-radius: 10px;
+                }
+            }
+
+            .active-btn {
+                background-color: #FFD700;
+            }
+        }
+    }
+}
