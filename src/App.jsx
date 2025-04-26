@@ -10,6 +10,9 @@ import DashboardPage from './pages/DashboardPage';  // This is your main dashboa
 import NotFound from './pages/NotFound';
 import LoginRegister from './pages/auth/LoginRegister';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
+
 function App() {
   return (
     <BrowserRouter basename="/rtteches">

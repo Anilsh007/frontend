@@ -1,13 +1,25 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import darkLogo from '../../assets/dark.png';
+import whiteLogo from '../../assets/white.png';
 
 export default function LoginRegister() {
     const [activeTab, setActiveTab] = useState('login');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [name, setName] = useState('');
     const navigate = useNavigate();
 
     const handleLogin = (e) => {
+        e.preventDefault();
+        // Fake login success
+        console.log(e);
+        if (email && password) {
+            navigate('/dashboard');
+        }
+    };
+
+    const handleRegister = (e) => {
         e.preventDefault();
         // Fake login success
         if (email && password) {
@@ -17,18 +29,24 @@ export default function LoginRegister() {
 
     return (
         <div className="loginRegister">
+
+            <div>
+                <img src={whiteLogo} alt="logo" className='w-25' />
+            </div>
+
+
             <div className='LRContainer'>
 
                 <div className="btns">
                     <button
-                        className={`btn ${activeTab === 'login' ? 'active-btn' : 'inactive-btn'
+                        className={`${activeTab === 'login' ? 'active-btn' : 'inactive-btn'
                             }`}
                         onClick={() => setActiveTab('login')}
                     >
                         Login
                     </button>
                     <button
-                        className={`btn ${activeTab === 'register' ? 'active-btn' : 'inactive-btn'
+                        className={`${activeTab === 'register' ? 'active-btn' : 'inactive-btn'
                             }`}
                         onClick={() => setActiveTab('register')}
                     >
@@ -38,34 +56,48 @@ export default function LoginRegister() {
 
                 {activeTab === 'login' && (
                     <div className="auth-container">
-                        <h2>Login</h2>
                         <form onSubmit={handleLogin}>
-                            <input
-                                type="email" placeholder="Email"
-                                value={email} onChange={(e) => setEmail(e.target.value)}
-                            />
-                            <br/>
-                            <input
-                                type="password" placeholder="Password"
-                                value={password} onChange={(e) => setPassword(e.target.value)}
-                            />
-                            <br />
-                            <button className='btn' type="submit">Login</button>
+                            <div className="mb-3 mt-3">
+                                <label htmlFor="email" className="form-label">Email:</label>
+                                <input type="email" className="form-control" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Enter email" name="email" />
+                            </div>
+
+                            <div className="mb-3 mt-3">
+                                <label htmlFor="email" className="form-label">Password:</label>
+                                <input type="password" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Enter password" name="password" />
+                            </div>
+
+                            <button type="submit" className="btn btn-outline-primary w-100">Login</button>
                         </form>
                     </div>
                 )}
 
                 {activeTab === 'register' && (
-                    <div className="bg-white p-4 rounded shadow">
-                        <h2 className="text-lg font-bold mb-2">Register</h2>
-                        <input className="w-full mb-2 p-2 border rounded" type="text" placeholder="Name" />
-                        <input className="w-full mb-2 p-2 border rounded" type="email" placeholder="Email" />
-                        <input className="w-full mb-2 p-2 border rounded" type="password" placeholder="Password" />
-                        <button className="bg-green-600 text-white w-full p-2 rounded">Register</button>
+                    <div className="auth-container">
+                        <form onSubmit={handleRegister}>
+                            <div className="mb-3 mt-3">
+                                <label htmlFor="name" className="form-label">Name:</label>
+                                <input type="text" className="form-control" value={name} onChange={(e) => setEmail(e.target.value)} placeholder="Enter name" name="name" />
+                            </div>
+
+                            <div className="mb-3 mt-3">
+                                <label htmlFor="email" className="form-label">Email:</label>
+                                <input type="email" className="form-control" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Enter email" name="email" />
+                            </div>
+
+                            <div className="mb-3 mt-3">
+                                <label htmlFor="email" className="form-label">Password:</label>
+                                <input type="password" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Enter password" name="password" />
+                            </div>
+
+                            <button type="submit" className="btn btn-outline-primary w-100">Register</button>
+                        </form>
                     </div>
                 )}
 
             </div>
         </div>
+
+
     );
 }

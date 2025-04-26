@@ -10,15 +10,14 @@
     .LRContainer {
         box-shadow: 0 0 10px 0 #999;
         border-radius: 10px;
-        width: fit-content;
-        margin: auto;
+        width: 450px;
         background-color: #f6f5ff;
-        padding: 30px;
+        padding: 50px;
 
         .btns {
             text-align: center;
 
-            .btn {
+            button {
                 background-color: #fff;
                 border: none;
                 width: 100px;

@@ -1,7 +1,7 @@
 import { FaRegUser } from 'react-icons/fa';
 import { IoBookOutline, IoHomeOutline, IoSettingsOutline } from 'react-icons/io5';
 import { NavLink } from 'react-router-dom'; // ✅ use NavLink instead of Link
-import logo from '../../src/assets/logo.png';
+import logo from '../../src/assets/white.png';
 import { MdOutlineFeaturedPlayList } from 'react-icons/md';
 import { FaRegNoteSticky } from 'react-icons/fa6';
 
