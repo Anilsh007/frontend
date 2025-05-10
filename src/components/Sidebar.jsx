@@ -41,8 +41,12 @@ export default function Sidebar() {
 
   return (
     <div className="sidebar">
-      <div className="logo">
-        <img src={logo} alt="logo" />
+      <div className="user-div">
+        <FaRegUser/>
+        <div className="user-detail">
+          <h4>User name</h4>
+          <h6>Dept</h6>
+        </div>
       </div>
       <ul>
         {menuList.map((item, index) => (
