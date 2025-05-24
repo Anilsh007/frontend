@@ -4,7 +4,6 @@ import DashboardLayout from './dashboard/DashboardLayout';
 import DashboardHome from './dashboard/DashboardHome';
 import Profile from './dashboard/Profile';
 import Settings from './dashboard/Settings';
-//import DashboardPage from './pages/DashboardPage';  // This is your main dashboard page route
 import NotFound from './pages/NotFound';
 import Vendors from './pages/auth/Vendors';
 
