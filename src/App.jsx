@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import './styles/app.scss';
+import './styles/App.scss';
 import DashboardLayout from './dashboard/DashboardLayout';
 import DashboardHome from './dashboard/DashboardHome';
 import Profile from './dashboard/Profile';
