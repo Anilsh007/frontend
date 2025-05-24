@@ -11,7 +11,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import SuperAdminLayout from './pages/superAdmin/SuperAdminLayout';
 import AddClient from './pages/superAdmin/addClient';
-import About from './pages/superAdmin/about';
+import About from './pages/superAdmin/About';
 
 function App() {
   return (
