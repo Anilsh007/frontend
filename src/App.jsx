@@ -1,14 +1,12 @@
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import './styles/app.scss'
-import Login from './pages/auth/Login';
-import Register from './pages/auth/Register';
+import './styles/app.scss';
 import DashboardLayout from './dashboard/DashboardLayout';
 import DashboardHome from './dashboard/DashboardHome';
 import Profile from './dashboard/Profile';
 import Settings from './dashboard/Settings';
 //import DashboardPage from './pages/DashboardPage';  // This is your main dashboard page route
 import NotFound from './pages/NotFound';
-import LoginRegister from './pages/auth/LoginRegister';
+import Vendors from './pages/auth/Vendors';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
@@ -26,9 +24,7 @@ function App() {
           <Route path="/" element={<About />} />
         </Route>
 
-        <Route path="/vendor/:username" element={<LoginRegister />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/vendors/:ClientId" element={<Vendors />} />
 
         {/* Dashboard Layout and its Pages */}
         <Route path="/dashboard" element={<DashboardLayout />}>
