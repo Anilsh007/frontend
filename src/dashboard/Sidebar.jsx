@@ -1,15 +1,16 @@
 import { FaRegUser } from 'react-icons/fa';
 import { IoBookOutline, IoHomeOutline, IoSettingsOutline } from 'react-icons/io5';
-import { NavLink } from 'react-router-dom'; // ✅ use NavLink instead of Link
+import { NavLink, useOutletContext } from 'react-router-dom'; // ✅ use NavLink instead of Link
 import logo from '../../src/assets/white.png';
 import { MdOutlineFeaturedPlayList } from 'react-icons/md';
 import { FaRegNoteSticky } from 'react-icons/fa6';
 
-export default function Sidebar() {
+export default function Sidebar({SendClientId }) {
+
   const menuList = [
     {
       name: "Home",
-      link: "home",
+      link: "DashboardHome",
       icon: <IoHomeOutline />
     },
     {
@@ -45,7 +46,9 @@ export default function Sidebar() {
         <FaRegUser/>
         <div className="user-detail">
           <h4>User name</h4>
-          <h6>Dept</h6>
+          <h6>{typeof SendClientId === 'object'
+              ? SendClientId.FirstName
+              : SendClientId}</h6>
         </div>
       </div>
       <ul>

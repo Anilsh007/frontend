@@ -104,15 +104,20 @@
                 margin: 0 0 0 0;
 
                 li {
-                    a {
+
+                    a,
+                    button {
                         color: #fff;
                         text-decoration: none;
                         padding: 15px 15px;
                         display: block;
                         transition: 0.5s all;
+                        margin: auto;
+                        border: navajowhite;
+                        background: #f0f8ff00;
 
                         &:hover {
-                            background-color: #000;
+                            background-color: #000 !important;
                             transition: 0.5s all;
                         }
                     }
@@ -122,22 +127,25 @@
     }
 }
 
-.home_baner{
+.home_baner {
     filter: grayscale(1);
 }
 
-.card_container{
+.card_container {
     margin-top: 8vh;
     display: flex;
     justify-content: space-evenly;
-    .card{
+
+    .card {
         background-image: linear-gradient(to top left, var(--bs-info-bg-subtle), var(--bs-warning-bg-subtle));
-        svg{
+
+        svg {
             width: 70px;
             height: 70px;
-            margin:10px auto;
+            margin: 10px auto;
             color: #116aef;
         }
+
         text-align: center;
         margin: 20px 0;
         width: 340px;

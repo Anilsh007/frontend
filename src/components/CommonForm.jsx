@@ -53,14 +53,23 @@ const CommonForm = ({
                 required={field.required || false}
                 disabled={field.disabled || false}
               />
+            ) : field.type === 'file' ? (
+              <input
+                type="file"
+                className="form-control"
+                name={field.name}
+                onChange={handleChange}
+                accept={field.accept || '*/*'}
+                required={field.required || false}
+                disabled={field.disabled || false}
+              />
             ) : (
               <input
                 type={field.type}
                 className="form-control"
                 name={field.name}
-                value={field.type !== 'file' ? (formData[field.name] || '') : undefined}
+                value={formData[field.name] || ''}
                 onChange={handleChange}
-                accept={field.accept || '*/*'}
                 placeholder={field.placeholder || ''}
                 required={field.required || false}
                 disabled={field.disabled || false}
@@ -72,7 +81,7 @@ const CommonForm = ({
 
       <div className="text-end">
         {showSubmit && (
-          <button type="submit" className="btn btn-outline-primary">Submit</button>
+          <button type="submit" className="btn btn-outline-primary">{buttonLabel}</button>
         )}
       </div>
     </form>

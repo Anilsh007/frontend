@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import LoginRegister from './LoginRegister';
+import LoginRegister from './VendorsRegister';
 import API_BASE_URL from '../../config/Api';
+import Login from '../auth/Login';
+import Header from '../../components/Header';
 
 export default function Vendors() {
     const { ClientId } = useParams(); // Get ClientId from URL
@@ -32,6 +34,7 @@ export default function Vendors() {
 
     return (
         <>
+            <Header />
             <img
                 src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/i/1512c63e-a44e-48e8-92d6-51d80a43cc1e/dezucd8-a4dbad47-4a29-4065-b129-5cdcb64afcf4.png"
                 className="img-fluid vendor-baner"
@@ -59,7 +62,16 @@ export default function Vendors() {
                 )}
             </div>
 
-            <LoginRegister passClientId={ClientId} />
+            <div className="LRbox d-flex justify-content-around mb-1">
+                <div className="box text-center border p-5 rounded">
+                    <LoginRegister passClientId={ClientId} />
+                </div>
+
+                <div className="box text-center border p-5 rounded">
+                    <Login />
+                </div>
+            </div>
+
         </>
     );
 }

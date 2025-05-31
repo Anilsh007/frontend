@@ -37,13 +37,9 @@ const vendorFields = [
   { name: 'UserId', label: 'User ID', type: 'text' },
   { name: 'SecQuestion', label: 'Security Question', type: 'text' },
   { name: 'SecAnswer', label: 'Security Answer', type: 'text' },
+  { name: "document", label: "Upload Document", type: "file", accept: ".pdf,.doc,.docx,.jpg,.png" },
   { name: 'DateTime', label: 'Date & Time', type: 'datetime-local', readonly: true, disabled: true },
-  {
-    name: 'Type',
-    label: 'Type',
-    type: 'select',
-    options: [{ value: '2', label: 'Type 2' }]
-  }
+  { name: 'Type', label: 'Type', type: 'select', options: [{ value: '2', label: 'Type 2' }] }
 ];
 
 export default function LoginRegister({ passClientId }) {
@@ -72,9 +68,28 @@ export default function LoginRegister({ passClientId }) {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${API_BASE_URL}/vendors`, formData);
+      const data = new FormData();
+
+      // Append all form fields to FormData
+      for (const key in formData) {
+        if (formData.hasOwnProperty(key)) {
+          // For file inputs, append the file itself
+          if (formData[key] instanceof File) {
+            data.append(key, formData[key]);
+          } else {
+            data.append(key, formData[key]);
+          }
+        }
+      }
+
+      await axios.post(`${API_BASE_URL}/vendors`, data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
       alert('Vendor registered successfully!');
-      setFormData({ ...initialFormState, ClientId, Type: '2' });
+      setFormData({ ...initialFormState, ClientId, Type: '2', DateTime: formatDateTime() });
       modalCloseRef.current?.click();
     } catch (error) {
       const msg = error.response?.data?.message || error.message || 'Failed to register vendor.';
@@ -82,39 +97,13 @@ export default function LoginRegister({ passClientId }) {
     }
   };
 
+
   return (
     <>
-      <div className="LRbox d-flex justify-content-around mb-1">
-        <div className="box text-center border p-5 rounded">
-          <h3>New Vendor Registration</h3>
-          <p><strong>Register your company</strong></p>
-          <button
-            className="btn btn-outline-primary rounded-pill"
-            data-bs-toggle="modal"
-            data-bs-target="#registerModal"
-          >
-            REGISTER
-          </button>
-        </div>
+      <h3>New Vendor Registration</h3>
+      <p><strong>Register your company</strong></p>
+      <button className="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#registerModal" >REGISTER</button>
 
-        <div className="box text-center border p-5 rounded">
-          <h3>Login</h3>
-          <form>
-            {['Username', 'Password'].map((label) => (
-              <React.Fragment key={label}>
-                <label>{label}:</label>
-                <input
-                  type={label.toLowerCase()}
-                  className="form-control mb-2"
-                  placeholder={`Enter ${label}`}
-                />
-              </React.Fragment>
-            ))}
-            <button className="btn btn-outline-primary rounded-pill" type="submit">LOG IN</button>
-          </form>
-          <a href="#" className="d-block mt-2">Forgot Password? Click Here</a>
-        </div>
-      </div>
 
       {/* Modal */}
       <div className="modal fade" id="registerModal" tabIndex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
