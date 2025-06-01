@@ -23,6 +23,14 @@ export default function Header() {
     {
       name: "Blog",
       link: "blog"
+    },
+    {
+      name: "Register",
+      link: "Register"
+    },
+    {
+      name: "Login",
+      link: "Login"
     }
   ];
 
