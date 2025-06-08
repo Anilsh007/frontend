@@ -1,38 +1,42 @@
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import logo from '../../src/assets/white.png';
 
-export default function Header() {
+export default function Header({ clientLogo, passClientId }) {
   const navigate = useNavigate();
-  const isLoggedIn = localStorage.getItem('user'); // Check login status
+  const location = useLocation();
+  const path = location.pathname;
+
+  // Matches /cvcsem/ or /dashboard/ 
+  const isVendorPage = /^\/cvcsem\/[^/]+$/.test(path);
+  const isDashboard = path.startsWith('/dashboard');
 
   const handleLogout = (e) => {
     e.preventDefault();
     localStorage.removeItem('user');
-    navigate('/'); // Redirect after logout
+    navigate('/');
   };
 
-  const guest_Menu = [
-    // {
-    //   name: "Add Client",
-    //   link: "addClient"
-    // },
-    {
-      name: "Testimonials",
-      link: "testimonials"
-    },
-    {
-      name: "Blog",
-      link: "blog"
-    },
-    {
-      name: "Register",
-      link: "Register"
-    },
-    {
-      name: "Login",
-      link: "Login"
-    }
+  const homeMenu = [
+    { name: 'Home', link: '/' },
+    { name: 'Testimonials', link: '/testimonials' },
+    { name: 'Blog', link: '/blog' },
+    { name: 'Register', link: '/register' },
+    { name: 'Login', link: '/login' },
   ];
+
+  const vendorMenu = [
+    { name: 'Register', link: '/vendorsRegister', state: { passClientId } },
+    { name: 'Login', link: '/login' },
+  ];
+
+  const adminMenu = [
+    { name: 'Link 1', link: '' },
+    { name: 'Link 2', link: '' },
+    { name: 'Link 3', link: '' },
+    { name: 'Logout', onClick: handleLogout },
+  ];
+
+  const menuToRender = isDashboard ? adminMenu : isVendorPage ? vendorMenu : homeMenu;
 
   return (
     <header className="App_header">
@@ -40,9 +44,10 @@ export default function Header() {
         <div className="container">
           <div className="logo-div">
             <NavLink to="/" className="navbar-brand">
-              <img src={logo} alt="logo" className='img-fluid' />
+              <img src={clientLogo || logo} alt="logo" className="img-fluid" />
             </NavLink>
           </div>
+
           <button
             className="navbar-toggler"
             type="button"
@@ -51,19 +56,19 @@ export default function Header() {
           >
             <span className="navbar-toggler-icon"></span>
           </button>
+
           <div className="collapse navbar-collapse justify-content-end" id="collapsibleNavbar">
-            <ul>
-              {!isLoggedIn ? (
-                guest_Menu.map((item, index) => (
-                  <li key={index}>
-                    <NavLink to={`/${item.link}`} className={({ isActive }) => (isActive ? 'active-menu' : '')} ><span>{item.name}</span></NavLink>
-                  </li>
-                ))
-              ) : (
-                <li>
-                  <button onClick={handleLogout} style={{ textDecoration: 'none' }} >Logout</button>
+            <ul className="navbar-nav">
+              {menuToRender.map((item, index) => (
+                <li key={index} className="nav-item">
+                  {item.onClick ? (
+                    <button onClick={item.onClick} className={({ isActive }) => isActive ? 'nav-link active-menu' : 'nav-link' }>{item.name}</button>
+                  ) : (
+                    <NavLink to={item.link} {...(item.state ? { state: item.state } : {})} className={({ isActive }) => isActive ? 'nav-link active-menu' : 'nav-link' } > {item.name} </NavLink>
+
+                  )}
                 </li>
-              )}
+              ))}
             </ul>
           </div>
         </div>

@@ -9,12 +9,19 @@
   box-shadow: 5px 0px 10px 0px #c9c9c9;
   width: 250px;
 
-  .user-div{
+  .user-div {
     display: flex;
     align-items: center;
     padding: 10px 10px;
     border-bottom: 1px solid #999;
-    svg{
+
+    .sidebar-profile {
+      width: 50px;
+      height: 50px;
+      border-radius: 100px;
+    }
+
+    svg {
       width: 40px;
       height: 40px;
       border: 2px solid #000000;
@@ -22,13 +29,15 @@
       padding: 1px;
     }
 
-    .user-detail{
+    .user-detail {
       margin-left: 10px;
-      h4{
+
+      h4 {
         line-height: normal;
         margin: auto;
       }
-      h6{
+
+      h6 {
         line-height: normal;
         margin: auto;
       }
@@ -88,4 +97,6 @@
 .main-content {
   flex-grow: 1;
   padding: 0 1rem;
+  overflow: auto;
+  height: 92vh;
 }

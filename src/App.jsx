@@ -7,34 +7,39 @@ import Settings from './dashboard/Settings';
 import NotFound from './pages/NotFound';
 import Vendors from './pages/vendors/Vendors';
 import Home from './pages/superAdmin/Home';
-import AddClient from './pages/superAdmin/addClient';
 import About from './pages/superAdmin/About';
-import PrivateRoute from './pages/auth/PrivateRoute'; // 👈 Import here
+import PrivateRoute from './pages/auth/PrivateRoute';
 import VendorDetail from './pages/vendors/VendorDetail';
+import VendorsRegister from './pages/vendors/VendorsRegister';
+import ClientUser from './dashboard/ClientUser';
+import AdminVendors from './dashboard/AdminVendors';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Super Admin Layout Routes */}
         <Route element={<Home />}>
-          {/* <Route path="/addClient" element={<AddClient />} /> */}
           <Route path="/" element={<About />} />
         </Route>
-        <Route path="/vendors/:ClientId" element={<Vendors />} />
+
+        {/* vendors */}
+        <Route path="/cvcsem/:ClientId" element={<Vendors />} />
         <Route path="/VendorDetail" element={<VendorDetail />} />
+        <Route path="/vendorsRegister" element={<VendorsRegister />} />
 
         {/* Protected Dashboard Routes */}
-        <Route path="/dashboard" element={
-          <PrivateRoute>
-            <DashboardLayout />
-          </PrivateRoute>
-        }>
-          <Route path="DashboardHome" element={<DashboardHome />} />
-          <Route path="profile" element={<Profile />} />
-          <Route path="settings" element={<Settings />} />
-          <Route path="*" element={<NotFound />} />
+        <Route path="/dashboard" element={<PrivateRoute />}>
+          <Route element={<DashboardLayout />}>
+            <Route index element={<DashboardHome />} />
+            <Route path="DashboardHome" element={<DashboardHome />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="settings" element={<Settings />} />
+            <Route path="ClientUser" element={<ClientUser />} />
+            <Route path="AdminVendors" element={<AdminVendors/>} />
+            <Route path="*" element={<NotFound />} />
+          </Route>
         </Route>
+
       </Routes>
     </BrowserRouter>
   );

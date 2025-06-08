@@ -1,18 +1,21 @@
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
+import { ClientContext } from './ClientContext'; // adjust path if needed
 import Sidebar from './Sidebar';
 import Header from '../components/Header';
 
 export default function DashboardLayout() {
-  const location = useLocation();
-  const SendClientId = location.state?.SendClientId ?? 'Unknown';
+  const user = JSON.parse(localStorage.getItem('user'));
+  const getAdminDetails = user?.sendAdminDetails;
 
   return (
     <>
       <Header />
       <div className="dashboard-layout">
-        <Sidebar SendClientId={SendClientId} /> {/* Pass to Sidebar as prop */}
+        <Sidebar adminData={getAdminDetails} />
         <div className="main-content">
-          <Outlet />
+          <ClientContext.Provider value={{ getAdminDetails }}>
+            <Outlet />
+          </ClientContext.Provider>
         </div>
       </div>
     </>

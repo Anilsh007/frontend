@@ -48,17 +48,16 @@ export default function Login() {
       // Successful login here
       if (data.user) {
         const userType = data.user.Type;
-        console.log('Login successful:', data.user);
 
         localStorage.setItem('user', JSON.stringify({
           type: data.user.Type,
-          clientId: data.user.ClientId,
+          sendAdminDetails: data.user,
           vendorCode: data.user.vendorcode,
         }));
 
 
         if (userType === 1) {
-          navigate('/dashboard', { state: { SendClientId: data.user.ClientId } });
+          navigate('/dashboard');
 
         } else if (userType === 2) {
           navigate('/VendorDetail', { state: { vendorcode: data.user.vendorcode } });

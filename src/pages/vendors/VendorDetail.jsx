@@ -125,7 +125,7 @@ export default function VendorDetail() {
                             </div>
                             <div>
                                 {/* Placeholder image */}
-                                <img src="https://via.placeholder.com/100" alt="Vendor" className="img-thumbnail" />
+                                <img src={`https://api.cvcsem.com/uploads/${vendorData.profileImage}` || "https://via.placeholder.com/100"} alt="Vendor" className="img-thumbnail vendor-profile" />
                             </div>
                         </div>
 

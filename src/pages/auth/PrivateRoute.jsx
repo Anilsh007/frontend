@@ -1,8 +1,22 @@
-// src/components/PrivateRoute.jsx
-import { Navigate } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
-export default function PrivateRoute({ children }) {
-    const user = localStorage.getItem('user');
+export default function PrivateRoute() {
+  const location = useLocation();
+  let user = null;
 
-    return user ? children : <Navigate to="/" replace />;
+  try {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      user = JSON.parse(storedUser);
+    }
+  } catch (e) {
+    console.error('Invalid user in localStorage:', e);
+    localStorage.removeItem('user');
+  }
+
+  return user ? (
+    <Outlet />
+  ) : (
+    <Navigate to="/" replace state={{ from: location }} />
+  );
 }

@@ -1,9 +1,11 @@
 export default function Profile() {
-    return (
+
+  return (
+    <>
       <div className="page">
-        <h2>Your Profile</h2>
-        <p>Manage your personal information here.</p>
+        <h2>Profile</h2>
+        <p>Manage your profile settings here.</p>
       </div>
-    );
-  }
-  
+    </>
+  );
+}

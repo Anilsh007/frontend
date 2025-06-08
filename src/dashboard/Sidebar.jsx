@@ -1,12 +1,11 @@
 import { FaRegUser } from 'react-icons/fa';
-import { IoBookOutline, IoHomeOutline, IoSettingsOutline } from 'react-icons/io5';
-import { NavLink, useOutletContext } from 'react-router-dom'; // ✅ use NavLink instead of Link
-import logo from '../../src/assets/white.png';
-import { MdOutlineFeaturedPlayList } from 'react-icons/md';
+import { IoHomeOutline, IoSettingsOutline } from 'react-icons/io5';
+import { NavLink } from 'react-router-dom'; // ✅ use NavLink instead of Link
+import { GiChaingun } from "react-icons/gi";
 import { FaRegNoteSticky } from 'react-icons/fa6';
+import { HiOutlineUserGroup } from "react-icons/hi";
 
-export default function Sidebar({SendClientId }) {
-
+export default function Sidebar({adminData }) {
   const menuList = [
     {
       name: "Home",
@@ -14,14 +13,14 @@ export default function Sidebar({SendClientId }) {
       icon: <IoHomeOutline />
     },
     {
-      name: "About",
-      link: "about",
-      icon: <IoBookOutline />
+      name: "Users",
+      link: "ClientUser",
+      icon: <HiOutlineUserGroup />
     },
     {
-      name: "Feature",
-      link: "feature",
-      icon: <MdOutlineFeaturedPlayList />
+      name: "Vendors",
+      link: "AdminVendors",
+      icon: <GiChaingun />
     },
     {
       name: "Testimonial",
@@ -43,12 +42,18 @@ export default function Sidebar({SendClientId }) {
   return (
     <div className="sidebar">
       <div className="user-div">
-        <FaRegUser/>
+        <>{
+          adminData && adminData.profileImage ? (
+            <img src={`https://api.cvcsem.com/uploads/${adminData.profileImage}`} alt="Logo" className="sidebar-profile" />
+          ) : (
+            <FaRegUser/>
+          )
+        }
+        </>
+        
         <div className="user-detail">
-          <h4>User name</h4>
-          <h6>{typeof SendClientId === 'object'
-              ? SendClientId.FirstName
-              : SendClientId}</h6>
+          <h4>{adminData.FirstName} {adminData.LastName}</h4>
+          <h6>{adminData.ClientId}</h6>
         </div>
       </div>
       <ul>
