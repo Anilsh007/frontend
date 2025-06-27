@@ -20,7 +20,7 @@ export default function Header({ clientLogo, passClientId }) {
     { name: 'Home', link: '/' },
     { name: 'Testimonials', link: '/testimonials' },
     { name: 'Blog', link: '/blog' },
-    { name: 'Register', link: '/register' },
+    { name: 'Register', link: 'cvcsem/cvcsem' },
     { name: 'Login', link: '/login' },
   ];
 
@@ -41,7 +41,7 @@ export default function Header({ clientLogo, passClientId }) {
   return (
     <header className="App_header">
       <nav className="navbar navbar-expand-sm navbar-dark">
-        <div className="container">
+        <div className="container-fluid">
           <div className="logo-div">
             <NavLink to="/" className="navbar-brand">
               <img src={clientLogo || logo} alt="logo" className="img-fluid" />

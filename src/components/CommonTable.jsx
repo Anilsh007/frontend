@@ -1,6 +1,34 @@
-export default function CommonTable({ columns, data = [], title }) {
+import { useState, useEffect } from "react";
+
+export default function CommonTable({
+  columns,
+  data = [],
+  title,
+  showCheckbox = false,
+  onRowSelect = () => {},
+  selectedRows = [],
+}) {
+  const [selectAll, setSelectAll] = useState(false);
+
+  useEffect(() => {
+    if (selectAll && data.length > 0) {
+      onRowSelect(data.map((_, index) => index)); // Select all rows
+    } else if (!selectAll) {
+      onRowSelect([]); // Deselect all
+    }
+  }, [selectAll, data]);
+
+  const handleCheckboxChange = (index) => {
+    const isSelected = selectedRows.includes(index);
+    const updatedSelection = isSelected
+      ? selectedRows.filter((i) => i !== index)
+      : [...selectedRows, index];
+
+    onRowSelect(updatedSelection);
+  };
+
   return (
-    <div className="mt-4">
+    <div className="mt-4 table-responsive">
       {title && <h4 className="mb-3">{title}</h4>}
 
       {data.length === 0 ? (
@@ -9,6 +37,15 @@ export default function CommonTable({ columns, data = [], title }) {
         <table className="table table-striped table-bordered">
           <thead className="table-dark">
             <tr>
+              {showCheckbox && (
+                <th style={{ width: "50px" }}>
+                  <input
+                    type="checkbox"
+                    checked={selectedRows.length === data.length}
+                    onChange={() => setSelectAll(!selectAll)}
+                  />
+                </th>
+              )}
               {columns.map((col) => (
                 <th key={col.key}>{col.label}</th>
               ))}
@@ -16,34 +53,35 @@ export default function CommonTable({ columns, data = [], title }) {
           </thead>
           <tbody>
             {data.map((item, rowIdx) => (
-              <tr key={item.id || rowIdx}>
+              <tr
+                key={item.id || rowIdx}
+                className={selectedRows.includes(rowIdx) ? "table-primary" : ""}
+              >
+                {showCheckbox && (
+                  <td>
+                    <input
+                      type="checkbox"
+                      checked={selectedRows.includes(rowIdx)}
+                      onChange={() => handleCheckboxChange(rowIdx)}
+                    />
+                  </td>
+                )}
                 {columns.map((col) => {
                   const rawValue = item[col.key];
 
-                  // Handle custom render
                   if (col.render) {
                     return (
                       <td key={col.key}>
-                        {col.render(rawValue, item)}
+                        {col.render(rawValue, item, rowIdx)}
                       </td>
                     );
                   }
 
-                  // Handle image
                   if (col.type === "image") {
                     return (
                       <td key={col.key}>
                         {rawValue ? (
-                          <img
-                            src={rawValue}
-                            alt=""
-                            style={{
-                              width: 50,
-                              height: 50,
-                              objectFit: "cover",
-                              borderRadius: "50%",
-                            }}
-                          />
+                          <img src={rawValue} alt={rawValue} className="table_img"/>
                         ) : (
                           "N/A"
                         )}
@@ -51,7 +89,6 @@ export default function CommonTable({ columns, data = [], title }) {
                     );
                   }
 
-                  // Handle file
                   if (col.type === "file") {
                     return (
                       <td key={col.key}>
@@ -70,10 +107,11 @@ export default function CommonTable({ columns, data = [], title }) {
                     );
                   }
 
-                  // Default
                   return (
                     <td key={col.key}>
-                      {rawValue !== null && rawValue !== undefined && rawValue !== ""
+                      {rawValue !== null &&
+                      rawValue !== undefined &&
+                      rawValue !== ""
                         ? String(rawValue)
                         : "—"}
                     </td>

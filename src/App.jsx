@@ -12,7 +12,7 @@ import PrivateRoute from './pages/auth/PrivateRoute';
 import VendorDetail from './pages/vendors/VendorDetail';
 import VendorsRegister from './pages/vendors/VendorsRegister';
 import ClientUser from './dashboard/ClientUser';
-import AdminVendors from './dashboard/AdminVendors';
+import AdminVendors from './dashboard/AdminVendor/AdminVendors';
 
 function App() {
   return (

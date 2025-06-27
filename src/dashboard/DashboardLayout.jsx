@@ -14,7 +14,9 @@ export default function DashboardLayout() {
         <Sidebar adminData={getAdminDetails} />
         <div className="main-content">
           <ClientContext.Provider value={{ getAdminDetails }}>
-            <Outlet />
+            <div className="container-fluid">
+              <Outlet />
+            </div>
           </ClientContext.Provider>
         </div>
       </div>

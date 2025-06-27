@@ -1,6 +1,10 @@
 .btn {
     width: 100%;
     margin: 2vh 0;
+    padding: 0.4vh !important;
+}
+
+.btn-outline-primary {
     padding: 1.4vh 0vw !important;
 }
 
@@ -33,4 +37,10 @@ svg {
     padding: 30px;
     border-radius: 5px;
     text-align: center;
+}
+
+.form-label {
+    margin-bottom: .5rem;
+    color: #ff6200;
+    font-weight: 500;
 }

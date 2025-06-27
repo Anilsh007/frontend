@@ -20,14 +20,19 @@ const CommonForm = ({
     <form onSubmit={onSubmit}>
       <div className="row">
         {fields.map((field) => (
-          <div className="col-md-4 mb-3" key={field.name}>
-            {!field.hideLabel && (
+          <div
+            className={field.fullWidth ? 'col-12 mb-3' : 'col-md-4 mb-3'}
+            key={field.name}
+          >
+            {!field.hideLabel && field.label && (
               <label className="form-label">{field.label}</label>
             )}
 
-            {field.type === 'select' ? (
+            {field.type === 'custom' && field.render ? (
+              <div>{field.render(formData, setFormData)}</div>
+            ) : field.type === 'select' ? (
               <select
-                className="form-control"
+                className={field.inputClass || "form-control"}
                 name={field.name}
                 value={formData[field.name] || ''}
                 onChange={handleChange}
@@ -44,7 +49,7 @@ const CommonForm = ({
               </select>
             ) : field.type === 'textarea' ? (
               <textarea
-                className="form-control"
+                className={field.inputClass || "form-control"}
                 name={field.name}
                 value={formData[field.name] || ''}
                 onChange={handleChange}
@@ -56,7 +61,7 @@ const CommonForm = ({
             ) : field.type === 'file' ? (
               <input
                 type="file"
-                className="form-control"
+                className={field.inputClass || "form-control"}
                 name={field.name}
                 onChange={handleChange}
                 accept={field.accept || '*/*'}
@@ -66,7 +71,7 @@ const CommonForm = ({
             ) : (
               <input
                 type={field.type}
-                className="form-control"
+                className={field.inputClass || "form-control"}
                 name={field.name}
                 value={formData[field.name] || ''}
                 onChange={handleChange}

@@ -1,86 +1,51 @@
 import { useClient } from './ClientContext';
+import dashboard_icon from '../assets/dashboard_icon.png';
+import { HiOutlineUserGroup } from 'react-icons/hi';
+import { GiChaingun } from 'react-icons/gi';
 
 export default function DashboardHome() {
   const { getAdminDetails } = useClient();
 
-  if (!getAdminDetails) {
-    return <div className="text-center mt-5 text-muted">Loading admin details...</div>;
-  }
+  const hours = new Date().getHours();
+  let greet = hours < 12 ? "Good Morning" : hours < 18 ? "Good Afternoon" : "Good Evening";
+
 
   return (
     <>
-      <div className="d-flex justify-content-between align-items-center bg-primary text-white p-3 rounded mt-5">
-        <div>
-          <h2>{getAdminDetails.FirstName} {getAdminDetails.LastName}</h2>
-          <p>Email: <strong>{getAdminDetails.AdminEmail}</strong></p>
-          <p>Client ID: <strong>{getAdminDetails.ClientId}</strong></p>
-          <p>About Us: {getAdminDetails.AboutUs}</p>
-        </div>
-        <div>
-          <img
-            src={`https://api.cvcsem.com/uploads/${getAdminDetails.profileImage}` || "https://via.placeholder.com/100"}
-            alt="Admin"
-            className="img-thumbnail"
-            style={{ maxWidth: '150px' }}
-          />
-        </div>
-      </div>
-
-      <div className="d-grid gap-4 mt-4" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))" }}>
-        <div className="p-3 bg-info text-white rounded">
-          <h5>Contact Information</h5>
-          <p>Phone: {getAdminDetails.Phone}</p>
-          <p>Mobile: {getAdminDetails.Mobile}</p>
-        </div>
-        <div className="p-3 bg-success text-white rounded">
-          <h5>Address</h5>
-          <p>{getAdminDetails.Address1}, {getAdminDetails.Address2}</p>
-          <p>{getAdminDetails.City}, {getAdminDetails.State} {getAdminDetails.ZipCode}</p>
-        </div>
-        <div className="p-3 bg-warning text-dark rounded">
-          <h5>Company</h5>
-          <p>Company Name: {getAdminDetails.CompanyName}</p>
-          <p>License Quantity: {getAdminDetails.LicenseQty}</p>
-        </div>
-      </div>
-
-      <div className="d-grid gap-4 mt-4" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))" }}>
-        <div className="p-3 bg-secondary text-white rounded">
-          <h5>Security Question</h5>
-          <p>Q: {getAdminDetails.Question}</p>
-          <p>A: {getAdminDetails.Answer}</p>
-        </div>
-        <div className="p-3 bg-light rounded text-dark">
-          <h5>Identifiers</h5>
-          <p>ID: {getAdminDetails.id}</p>
-          <p>Type: {getAdminDetails.Type}</p>
+      <div className='bg-gredient'>
+        <div className="row">
+          <div className="col-xxl-6 col-sm-6 col-lg-6 col-md-12">
+            <div className="py-4 px-5">
+              <h6>{greet},</h6>
+              <h2>{getAdminDetails.FirstName} {getAdminDetails.LastName}</h2>
+              <p>{getAdminDetails.AboutUs}</p>
+              <div className="mt-4 d-flex gap-5">
+                <div className="d-flex align-items-center">
+                  <div className="bg-success bg-gradient text-white p-3 rounded-3 me-3">
+                    <GiChaingun />
+                  </div>
+                  <div className="d-flex flex-column">
+                    <h2 className="m-0 lh-1">9</h2>
+                    <p className="m-0">Vendors</p>
+                  </div>
+                </div>
+                <div className="d-flex align-items-center">
+                  <div className="bg-warning bg-gradient text-white p-3 rounded-3 me-3">
+                    <HiOutlineUserGroup />
+                  </div>
+                  <div className="d-flex flex-column">
+                    <h2 className="m-0 lh-1">3</h2>
+                    <p className="m-0">Users</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="col-xxl-6 col-sm-6 col-lg-6 col-md-12 text-center">
+            <img src={dashboard_icon} alt={dashboard_icon} className="dashboard_icon img-fluid" />
+          </div>
         </div>
       </div>
-
-      <div className="d-grid gap-4 mb-4" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))" }}>
-        <div className="text-center">
-          <p className="text-muted">Company Logo</p>
-          <img
-            src={`https://api.cvcsem.com/uploads/${getAdminDetails.companylogo}`}
-            alt="Company Logo"
-            className="img-fluid border rounded"
-            style={{ maxHeight: '150px' }}
-          />
-        </div>
-        <div className="text-center">
-          <p className="text-muted">Banner</p>
-          <img
-            src={`https://api.cvcsem.com/uploads/${getAdminDetails.baner}`}
-            alt="Banner"
-            className="img-fluid border rounded"
-            style={{ maxHeight: '150px' }}
-          />
-        </div>
-      </div>
-
-      <button className="btn btn-outline-primary mt-3">
-        Update Details
-      </button>
     </>
   );
 }
