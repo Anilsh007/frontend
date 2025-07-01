@@ -37,10 +37,8 @@ export default function EmailSender(vendors = []) {
         setError(null);
 
         try {
-            await axios.post(`${API_BASE_URL}/sendVendorEmail`, {
-                to: "admin@example.com",
-                cc: "cc@sncde.dfd",
-                bcc: "bcc@sfr.dfdr",
+            await axios.post(`${API_BASE_URL}/email/send`, {
+                to: "anil9111099@gmail.com",
                 subject: "Selected Vendor Info",
                 body: emailBody,
             });
