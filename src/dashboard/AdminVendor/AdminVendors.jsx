@@ -87,6 +87,7 @@ export default function AdminVendors() {
         const data = Array.isArray(response.data) ? response.data : [response.data];
         setVendors(data);
         setFilteredVendors(data);
+        console.log("Total vendors:", data.length);
       } catch (err) {
         if (err.response?.status === 401) {
           setError("Unauthorized. Please log in again.");

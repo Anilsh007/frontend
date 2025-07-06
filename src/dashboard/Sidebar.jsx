@@ -26,19 +26,9 @@ export default function Sidebar({ adminData }) {
       icon: <GiChaingun />
     },
     {
-      name: "Testimonial",
-      link: "testimonial",
-      icon: <FaRegNoteSticky />
-    },
-    {
       name: "Profile",
       link: "profile",
       icon: <FaRegUser />
-    },
-    {
-      name: "Settings",
-      link: "settings",
-      icon: <IoSettingsOutline />
     }
   ];
 

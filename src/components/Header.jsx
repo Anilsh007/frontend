@@ -62,11 +62,19 @@ export default function Header({ clientLogo, passClientId }) {
               {menuToRender.map((item, index) => (
                 <li key={index} className="nav-item">
                   {item.onClick ? (
-                    <button onClick={item.onClick} className={({ isActive }) => isActive ? 'nav-link active-menu' : 'nav-link' }>{item.name}</button>
+                    <button onClick={item.onClick} className="nav-link btn btn-link text-white">
+                      {item.name}
+                    </button>
                   ) : (
-                    <NavLink to={item.link} {...(item.state ? { state: item.state } : {})} className={({ isActive }) => isActive ? 'nav-link active-menu' : 'nav-link' } > {item.name} </NavLink>
-
+                    <NavLink
+                      to={item.link}
+                      {...(item.state ? { state: item.state } : {})}
+                      className={({ isActive }) => isActive ? 'nav-link active-menu' : 'nav-link'}
+                    >
+                      {item.name}
+                    </NavLink>
                   )}
+
                 </li>
               ))}
             </ul>
