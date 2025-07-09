@@ -1,0 +1,25 @@
+{
+    "smallBusiness": [
+        "Minority Business Enterprise",
+        "Women Owned Minority Business Enterprise",
+        "Veteran Owned Small Business",
+        "Service Disabled Veteran Owned Small Business",
+        "Small Disadvantaged Business",
+        "SBA 8a Certified Business",
+        "HUB - Hubzone"
+    ],
+    "Business Classification": [
+        "Construction",
+        "Printing & Mailing",
+        "Mechanical, Plumbing & Electrical",
+        "IT Staffing & consulting",
+        "Janitorial",
+        "Lanscaping/Ground Maintenance",
+        "Healthcare",
+        "Computer repair, parts, equipment",
+        "Insurance",
+        "Travel & Leisure",
+        "Office Supplies",
+        "Training"
+    ]
+}

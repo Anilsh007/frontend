@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import CommonTable from "../../components/CommonTable";
 import { MdOutlinePreview } from "react-icons/md";
-import { RiMailSendLine } from "react-icons/ri";
 import SearchDocument from "./SearchDocument";
 import EmailSender from "./EmailSender";
 
@@ -60,8 +59,24 @@ export default function AdminVendors() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedRows, setSelectedRows] = useState([]);
+  const [showEmailForm, setShowEmailForm] = useState(false);
 
-  const { sendEmail, loading: emailSending } = EmailSender(filteredVendors);
+  const {
+    emailForm,
+    setEmailForm,
+    updateFormWithSelection,
+    sendEmail,
+    loading: emailSending,
+  } = EmailSender(filteredVendors);
+
+  useEffect(() => {
+    if (selectedRows.length > 0) {
+      updateFormWithSelection(selectedRows, getAdminDetails?.AdminEmail || "");
+      setShowEmailForm(true);
+    } else {
+      setShowEmailForm(false);
+    }
+  }, [selectedRows]);
 
   useEffect(() => {
     const clientId = getAdminDetails?.ClientId;
@@ -102,10 +117,6 @@ export default function AdminVendors() {
     fetchVendors();
   }, [getAdminDetails]);
 
-  const handleSendEmail = () => {
-    sendEmail(selectedRows);
-  };
-
   return (
     <div className="mt-5">
       <SearchDocument vendors={vendors} setFilteredVendors={setFilteredVendors} />
@@ -129,26 +140,69 @@ export default function AdminVendors() {
             onRowSelect={setSelectedRows}
           />
 
-          {selectedRows.length > 0 && (
-            <div className="d-flex justify-content-end mt-3">
-              <button
-                className="btn btn-outline-primary w-auto px-3 d-flex align-items-center gap-2"
-                onClick={handleSendEmail}
-                title="Send Email to Admin"
-                disabled={emailSending}
-              >
-                {emailSending ? (
-                  <>
-                    <span className="spinner-border spinner-border-sm" />
-                    Sending...
-                  </>
-                ) : (
-                  <>
-                    <RiMailSendLine size={20} /> Ready To Email
-                  </>
-                )}
-              </button>
+          {showEmailForm && (
+            <div className="card mt-4 p-3 border shadow-sm bg-light">
+              <h5 className="mb-3">📧 Compose Email</h5>
+
+              <div className="d-flex align-items-center">
+                <label>From</label>
+                <input className="form-control ms-2" value="admin@cvcsem.com" disabled />
+              </div>
+
+              <div className="d-flex align-items-center">
+                <label>To</label>
+                <input className="form-control" value={emailForm.to} onChange={(e) => setEmailForm({ ...emailForm, to: e.target.value })} />
+              </div>
+
+              <div className="d-flex align-items-center">
+                <label>CC</label>
+                <input className="form-control" value={emailForm.cc} onChange={(e) => setEmailForm({ ...emailForm, cc: e.target.value })} />
+              </div>
+
+              <div className="d-flex align-items-center">
+                <label>BCC</label>
+                <input className="form-control" value={emailForm.bcc} onChange={(e) => setEmailForm({ ...emailForm, bcc: e.target.value })} />
+              </div>
+
+              <div className="d-flex align-items-center">
+                <label>Subject</label>
+                <input className="form-control" value={emailForm.subject} onChange={(e) => setEmailForm({ ...emailForm, subject: e.target.value })} />
+              </div>
+
+              <div className="mb-2">
+                <label>Body</label>
+                <textarea rows={6} placeholder="Compose your mail" className="form-control" value={emailForm.body} onChange={(e) => setEmailForm({ ...emailForm, body: e.target.value })} />
+              </div>
+
+              <div className="mb-3 d-flex flex-end align-items-center items-end">
+                <div>
+                  <input
+                    type="file"
+                    className="form-control"
+                    multiple
+                    onChange={(e) => {
+                      const files = Array.from(e.target.files);
+                      setEmailForm((prev) => ({
+                        ...prev,
+                        attachments: files,
+                      }));
+                    }}
+                  />
+                  <ul>
+                    {emailForm.attachments && emailForm.attachments.length > 0 &&
+                      emailForm.attachments.map((file, index) => (
+                        <li key={index}>{file.name}</li>
+                      ))}
+                  </ul>
+                </div>
+
+                <button className="btn btn-outline-primary w-25" onClick={sendEmail} disabled={emailSending}>
+                  {emailSending ? "Sending..." : "Send Composed Email"}
+                </button>
+              </div>
+
             </div>
+            
           )}
         </>
       )}

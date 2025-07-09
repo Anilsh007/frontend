@@ -9,6 +9,7 @@ export default function Header({ clientLogo, passClientId }) {
   // Matches /cvcsem/ or /dashboard/ 
   const isVendorPage = /^\/cvcsem\/[^/]+$/.test(path);
   const isDashboard = path.startsWith('/dashboard');
+  const isVendorDetail = path.startsWith('/VendorDetail');
 
   const handleLogout = (e) => {
     e.preventDefault();
@@ -29,6 +30,13 @@ export default function Header({ clientLogo, passClientId }) {
     { name: 'Login', link: '/login' },
   ];
 
+  const VendorDetailMenu = [
+    { name: 'Link 1', link: '' },
+    { name: 'Link 2', link: '' },
+    { name: 'Link 3', link: '' },
+    { name: 'Logout', onClick: handleLogout },
+  ];
+
   const adminMenu = [
     { name: 'Link 1', link: '' },
     { name: 'Link 2', link: '' },
@@ -36,7 +44,7 @@ export default function Header({ clientLogo, passClientId }) {
     { name: 'Logout', onClick: handleLogout },
   ];
 
-  const menuToRender = isDashboard ? adminMenu : isVendorPage ? vendorMenu : homeMenu;
+  const menuToRender = isDashboard ? adminMenu : isVendorPage ? vendorMenu : isVendorDetail ? VendorDetailMenu : homeMenu;
 
   return (
     <header className="App_header">
@@ -62,9 +70,9 @@ export default function Header({ clientLogo, passClientId }) {
               {menuToRender.map((item, index) => (
                 <li key={index} className="nav-item">
                   {item.onClick ? (
-                    <button onClick={item.onClick} className="nav-link btn btn-link text-white">
+                    <NavLink onClick={item.onClick} className="nav-link active-menu">
                       {item.name}
-                    </button>
+                    </NavLink>
                   ) : (
                     <NavLink
                       to={item.link}

@@ -1,46 +1,68 @@
-import { useState, useCallback } from "react";
+import { useCallback, useState } from "react";
 import axios from "axios";
 import API_BASE_URL from "../../config/Api";
-
-const fileBaseURL = API_BASE_URL.replace(/\/api$/, "") + "/uploads/";
 
 export default function EmailSender(vendors = []) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const buildEmailBody = useCallback((selectedVendorData) => {
-        return selectedVendorData
-            .map((vendor, i) => `
-                ${i + 1}.
-                Name: ${vendor.Fname || ""} ${vendor.Lname || ""}
-                Email: ${vendor.Email || "N/A"}
-                Mobile: ${vendor.Mobile || "N/A"}
-                Company: ${vendor.vendorcompanyname || "N/A"}
-                Vendor Code: ${vendor.vendorcode || "N/A"}
-                Profile Image: ${vendor.profileImage ? fileBaseURL + vendor.profileImage : "N/A"}
-                Document: ${vendor.docx ? fileBaseURL + vendor.docx : "N/A"}
-                    `)
-            .join("\n\n");
-    }, []);
+    const fileBaseURL = API_BASE_URL.replace(/\/api$/, "") + "/uploads/";
 
-    const sendEmail = async (selectedIndexes) => {
-        const selectedVendorData = selectedIndexes.map((i) => vendors[i]);
+    const [emailForm, setEmailForm] = useState({
+        to: "",              // Admin email (auto-filled)
+        cc: "",
+        bcc: "",             // All selected vendor emails
+        subject: "Selected Vendor Info",
+        body: "",            // Empty to allow custom message
+        attachments: [],
+    });
 
-        if (!selectedVendorData.length) {
-            alert("Please select vendors to email.");
-            return false;
+    // ✅ Prepare form fields when vendors are selected
+    const updateFormWithSelection = useCallback((selectedIndexes, adminEmail = "") => {
+        const selectedVendorData = selectedIndexes.map(i => vendors[i]);
+
+        const bccList = selectedVendorData
+            .map(v => v.Email)
+            .filter(Boolean)
+            .join(",");
+
+        setEmailForm(prev => ({
+            ...prev,
+            to: adminEmail || "",
+            bcc: bccList,
+            body: "", // Empty body so admin can compose manually
+            attachments: [],
+        }));
+    }, [vendors]);
+
+    // ✅ Send email
+    const sendEmail = async () => {
+        if (!emailForm.to || !emailForm.subject || !emailForm.body) {
+            alert("To, Subject, and Body are required!");
+            return;
         }
 
-        const emailBody = buildEmailBody(selectedVendorData);
+        const formData = new FormData();
+        formData.append("to", emailForm.to);
+        formData.append("cc", emailForm.cc);
+        formData.append("bcc", emailForm.bcc);
+        formData.append("subject", emailForm.subject);
+        formData.append("body", emailForm.body);
+
+        if (emailForm.attachments?.length) {
+            emailForm.attachments.forEach((file, i) => {
+                formData.append("attachments", file); // key name must match backend
+            });
+        }
 
         setLoading(true);
         setError(null);
 
         try {
-            await axios.post(`${API_BASE_URL}/email/send`, {
-                to: "anil9111099@gmail.com",
-                subject: "Selected Vendor Info",
-                body: emailBody,
+            await axios.post(`${API_BASE_URL}/email/send`, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
             });
 
             alert("Email sent successfully!");
@@ -55,5 +77,13 @@ export default function EmailSender(vendors = []) {
         }
     };
 
-    return { sendEmail, loading, error };
+
+    return {
+        emailForm,
+        setEmailForm,
+        updateFormWithSelection,
+        sendEmail,
+        loading,
+        error,
+    };
 }

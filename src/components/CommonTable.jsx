@@ -34,7 +34,7 @@ export default function CommonTable({
       {data.length === 0 ? (
         <div className="text-muted text-center">No data found.</div>
       ) : (
-        <table className="table table-striped table-bordered">
+        <table className="table table-striped table-bordered align-middle text-nowrap">
           <thead className="table-dark">
             <tr>
               {showCheckbox && (

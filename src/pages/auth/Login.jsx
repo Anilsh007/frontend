@@ -56,7 +56,7 @@ export default function Login() {
         }));
 
 
-        if (userType === 1) {
+        if (userType === 1 || userType === 3) {
           navigate('/dashboard');
 
         } else if (userType === 2) {
