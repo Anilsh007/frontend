@@ -171,11 +171,38 @@
 }
 
 table {
-  thead,tbody {
+
+  thead,
+  tbody {
     tr {
-      td:last-child,th:last-child {
+
+      td:last-child,
+      th:last-child {
         display: none;
       }
+    }
+  }
+}
+
+// maill body
+.mail-attachments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+
+  li {
+    display: flex;
+    background-color: #007bff;
+    color: white;
+    padding: 0 10px;
+    border-radius: 20px;
+    margin: 0;
+    align-items: baseline;
+    button {
+      background-color: #ffffff00;
+      border: none;
+      padding: 0;
+      margin-right: -7px;
     }
   }
 }

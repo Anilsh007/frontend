@@ -44,3 +44,9 @@ svg {
     color: #ff6200;
     font-weight: 500;
 }
+
+select.form-control {
+  appearance: auto;
+  -webkit-appearance: auto;
+  -moz-appearance: auto;
+}

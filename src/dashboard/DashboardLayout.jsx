@@ -6,6 +6,7 @@ import Header from '../components/Header';
 export default function DashboardLayout() {
   const user = JSON.parse(localStorage.getItem('user'));
   const getAdminDetails = user?.sendAdminDetails;
+  console.log("Admin Details:", getAdminDetails);
 
   return (
     <>

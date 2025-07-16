@@ -1,5 +1,7 @@
 import CommonForm from "../../components/CommonForm";
 import { useState } from "react";
+import QandA from "../../components/QandA";
+import states from "../../components/states";
 
 export default function SearchDocument({ vendors, setFilteredVendors }) {
   const [showSearchDoc, setShowSearchDoc] = useState(false); // Toggle between search modes
@@ -41,46 +43,14 @@ export default function SearchDocument({ vendors, setFilteredVendors }) {
 
   // 🧩 Form fields
   const formFields = [
-    { name: "Small Business", label: "Small Business(Drop down)", type: "text" },
-    { name: "BusinessClassification", label: "Business Classification(Drop down)", type: "text" },
-    { name: "State", label: "State(Drop down)", type: "text" },
-    // { name: "Company", label: "Company", type: "text" },
+    { name: "Sbclass", label: "Small Business Classification", type: "select", options: QandA.smallBusiness.map(item => ({ label: item, value: item })) }, { name: "Class", label: "Business Classification", type: "select", options: QandA["Business Classification"].map(item => ({ label: item, value: item })) },
+    { name: "State", label: "State", type: "select", options: states.map(state => ({ label: state, value: state })) },
     {
-      name: "idCodesGroup",
-      label: "NAICS / NIGP",
-      type: "custom",
+      name: "idCodesGroup", label: "NAICS / NIGP", type: "custom",
       render: (formData, setFormData) =>
         renderGroupedInputs(["NAICS", "NIGP"], formData, setFormData)
     },
-    // {
-    //   name: "NaicsGroup",
-    //   label: "NAICS Codes",
-    //   type: "custom",
-    //   render: (formData, setFormData) =>
-    //     renderGroupedInputs(
-    //       ["Naics1", "Naics2", "Naics3", "Naics4", "Naics5"],
-    //       formData,
-    //       setFormData
-    //     )
-    // },
-    // {
-    //   name: "NigpGroup",
-    //   label: "NIGP Codes",
-    //   type: "custom",
-    //   render: (formData, setFormData) =>
-    //     renderGroupedInputs(
-    //       ["Nigp1", "Nigp2", "Nigp3", "Nigp4", "Nigp5"],
-    //       formData,
-    //       setFormData
-    //     )
-    // },
-    {
-      name: "documentSearch",
-      label: "Space After each keyword",
-      type: "textarea",
-      inputClass: "form-control",
-      rows: 3
-    }
+    { name: "documentSearch", label: "Space After each keyword", type: "textarea", inputClass: "form-control", rows: 3 }
   ];
 
   const toggleSearchMode = () => {
@@ -91,23 +61,60 @@ export default function SearchDocument({ vendors, setFilteredVendors }) {
     e.preventDefault();
 
     const filtered = vendors.filter((vendor) => {
-      // Match normal fields
-      const matchesForm = Object.entries(formData).every(([key, val]) => {
-        if (!val || key === "documentSearch") return true;
-        return (vendor[key] || "").toString().toLowerCase().includes(val.toLowerCase());
-      });
+      let isMatch = true;
 
-      // Match documentText
-      const docSearch = formData.documentSearch?.trim().toLowerCase();
-      const matchesDoc = !docSearch || (vendor.documentText || "").toLowerCase().includes(docSearch);
+      // Loop through each field in formData
+      for (const [key, value] of Object.entries(formData)) {
+        if (!value?.trim()) continue; // Ignore empty fields
 
-      return matchesForm && matchesDoc;
+        const val = value.trim().toLowerCase();
+
+        // ✅ Special case: Search in document text
+        if (key === "documentSearch") {
+          const docText = (vendor.documentText || "").toLowerCase();
+          if (!docText.includes(val)) {
+            isMatch = false;
+            break;
+          }
+        }
+
+        // ✅ Special case: NAICS field (search across Naics1–Naics5)
+        else if (key === "NAICS") {
+          const found = ["Naics1", "Naics2", "Naics3", "Naics4", "Naics5"].some(
+            (naicsKey) => (vendor[naicsKey] || "").toLowerCase().includes(val)
+          );
+          if (!found) {
+            isMatch = false;
+            break;
+          }
+        }
+
+        // ✅ Special case: NIGP field (search across Nigp1–Nigp5)
+        else if (key === "NIGP") {
+          const found = ["Nigp1", "Nigp2", "Nigp3", "Nigp4", "Nigp5"].some(
+            (nigpKey) => (vendor[nigpKey] || "").toLowerCase().includes(val)
+          );
+          if (!found) {
+            isMatch = false;
+            break;
+          }
+        }
+
+        // ✅ All other fields (direct match with vendor object)
+        else {
+          const vendorValue = (vendor[key] || "").toString().toLowerCase();
+          if (!vendorValue.includes(val)) {
+            isMatch = false;
+            break;
+          }
+        }
+      }
+
+      return isMatch;
     });
 
     setFilteredVendors(filtered);
   };
-
-
 
   const searchFields = [
     "vendorcode", "vendorcompanyname", "Email", "Mobile",
@@ -132,6 +139,31 @@ export default function SearchDocument({ vendors, setFilteredVendors }) {
     setFilteredVendors(filtered);
   };
 
+  const handleReset = () => {
+    setFormData({
+      ClientId: "",
+      UserCode: "",
+      Fname: "",
+      Lname: "",
+      Email: "",
+      EIN: "",
+      Duns: "",
+      UEI: "",
+      Naics1: "", Naics2: "", Naics3: "", Naics4: "", Naics5: "",
+      Nigp1: "", Nigp2: "", Nigp3: "", Nigp4: "", Nigp5: "",
+      documentSearch: "",
+      NAICS: "",
+      NIGP: "",
+      Sbclass: "",
+      Class: "",
+      State: ""
+    });
+
+    setFilteredVendors(vendors);   // Reset the table back to full list
+    setSearchCode("");             // Clear simple search too (optional)
+  };
+
+
   return (
     <div className="mt-4">
       <div className="d-flex align-items-center justify-content-between">
@@ -148,13 +180,20 @@ export default function SearchDocument({ vendors, setFilteredVendors }) {
         {showSearchDoc ? (
           <>
             <h5 className="text-primary">Advanced Search</h5>
-            <CommonForm
-              fields={formFields}
-              formData={formData}
-              setFormData={setFormData}
-              onSubmit={handleSubmit}
-              buttonLabel="Search"
-            />
+            <>
+              <CommonForm
+                fields={formFields}
+                formData={formData}
+                setFormData={setFormData}
+                onSubmit={handleSubmit}
+                showSubmit={false}// hide default button
+              />
+
+              <div className="d-flex justify-content-end gap-2 mt-2">
+                <button className="btn btn-outline-secondary w-25" onClick={handleReset}>Reset</button>
+                <button className="btn btn-outline-primary w-25" onClick={handleSubmit}>Search</button>
+              </div>
+            </>
           </>
         ) : (
           <>

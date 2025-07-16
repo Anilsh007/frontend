@@ -3,9 +3,10 @@ import API_BASE_URL from "../../config/Api";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import CommonTable from "../../components/CommonTable";
-import { MdOutlinePreview } from "react-icons/md";
+import { MdAttachFile, MdOutlineContactMail, MdOutlinePreview } from "react-icons/md";
 import SearchDocument from "./SearchDocument";
 import EmailSender from "./EmailSender";
+import { IoCloseSharp } from "react-icons/io5";
 
 const fileBaseURL = API_BASE_URL.replace(/\/api$/, "") + "/uploads/";
 
@@ -142,67 +143,107 @@ export default function AdminVendors() {
 
           {showEmailForm && (
             <div className="card mt-4 p-3 border shadow-sm bg-light">
-              <h5 className="mb-3">📧 Compose Email</h5>
+              <h5 className="mb-3"><MdOutlineContactMail /> Compose Email</h5>
 
-              <div className="d-flex align-items-center">
-                <label>From</label>
-                <input className="form-control ms-2" value="admin@cvcsem.com" disabled />
-              </div>
-
-              <div className="d-flex align-items-center">
-                <label>To</label>
-                <input className="form-control" value={emailForm.to} onChange={(e) => setEmailForm({ ...emailForm, to: e.target.value })} />
-              </div>
-
-              <div className="d-flex align-items-center">
-                <label>CC</label>
-                <input className="form-control" value={emailForm.cc} onChange={(e) => setEmailForm({ ...emailForm, cc: e.target.value })} />
-              </div>
-
-              <div className="d-flex align-items-center">
-                <label>BCC</label>
-                <input className="form-control" value={emailForm.bcc} onChange={(e) => setEmailForm({ ...emailForm, bcc: e.target.value })} />
-              </div>
-
-              <div className="d-flex align-items-center">
-                <label>Subject</label>
-                <input className="form-control" value={emailForm.subject} onChange={(e) => setEmailForm({ ...emailForm, subject: e.target.value })} />
-              </div>
-
-              <div className="mb-2">
-                <label>Body</label>
-                <textarea rows={6} placeholder="Compose your mail" className="form-control" value={emailForm.body} onChange={(e) => setEmailForm({ ...emailForm, body: e.target.value })} />
-              </div>
-
-              <div className="mb-3 d-flex flex-end align-items-center items-end">
-                <div>
-                  <input
-                    type="file"
-                    className="form-control"
-                    multiple
-                    onChange={(e) => {
-                      const files = Array.from(e.target.files);
-                      setEmailForm((prev) => ({
-                        ...prev,
-                        attachments: files,
-                      }));
-                    }}
-                  />
-                  <ul>
-                    {emailForm.attachments && emailForm.attachments.length > 0 &&
-                      emailForm.attachments.map((file, index) => (
-                        <li key={index}>{file.name}</li>
-                      ))}
-                  </ul>
+              <div className="row">
+                <div className="col-2 col-sm-1 col-form-label">
+                  <label>From</label>
                 </div>
+                <div className="col-10 col-sm-11">
+                  <input className="form-control" value="admin@cvcsem.com" disabled />
+                </div>
+              </div>
 
+              <div className="row mt-1">
+                <div className="col-2 col-sm-1 col-form-label">
+                  <label>To</label>
+                </div>
+                <div className="col-10 col-sm-11">
+                  <input className="form-control" value={emailForm.to} onChange={(e) => setEmailForm({ ...emailForm, to: e.target.value })} />
+                </div>
+              </div>
+
+              <div className="row mt-1">
+                <div className="col-2 col-sm-1 col-form-label">
+                  <label>CC</label>
+                </div>
+                <div className="col-10 col-sm-11">
+                  <input className="form-control" value={emailForm.cc} onChange={(e) => setEmailForm({ ...emailForm, cc: e.target.value })} />
+                </div>
+              </div>
+
+              <div className="row mt-1">
+                <div className="col-2 col-sm-1 col-form-label">
+                  <label>BCC</label>
+                </div>
+                <div className="col-10 col-sm-11">
+                  <input className="form-control" value={emailForm.bcc} onChange={(e) => setEmailForm({ ...emailForm, bcc: e.target.value })} />
+                </div>
+              </div>
+
+              <div className="row mt-1">
+                <div className="col-2 col-sm-1 col-form-label">
+                  <label>Subject</label>
+                </div>
+                <div className="col-10 col-sm-11">
+                  <input className="form-control" value={emailForm.subject} onChange={(e) => setEmailForm({ ...emailForm, subject: e.target.value })} />
+                </div>
+              </div>
+
+              <div className="d-flex justify-content-end align-items-center mt-2">
+
+                <ul className="mb-0 mail-attachments">
+                  {emailForm.attachments && emailForm.attachments.length > 0 &&
+                    emailForm.attachments.map((file, index) => (
+                      <li key={index} className="badge"> <span>{file.name}</span>
+                        <button type="button"
+                          onClick={() => {
+                            setEmailForm((prev) => ({
+                              ...prev,
+                              attachments: prev.attachments.filter((_, i) => i !== index),
+                            }));
+                          }}
+                        >
+                          <IoCloseSharp />
+                        </button>
+                      </li>
+                    ))}
+                </ul>
+
+                <label htmlFor="file-upload" className="  me-2" title="Attach files"><MdAttachFile /></label>
+                <input id="file-upload" type="file"
+                  style={{ display: 'none' }}
+                  multiple
+                  onChange={(e) => {
+                    const newFiles = Array.from(e.target.files);
+                    setEmailForm((prev) => {
+                      const existingFiles = prev.attachments || [];
+                      const combined = [...existingFiles, ...newFiles];
+
+                      // Remove duplicates by name
+                      const uniqueFiles = Array.from(new Map(combined.map(f => [f.name, f])).values());
+
+                      return {
+                        ...prev,
+                        attachments: uniqueFiles,
+                      };
+                    });
+                  }}
+
+                />
+
+              </div>
+
+              <textarea rows={6} placeholder="Compose your mail" className="form-control mt-2" value={emailForm.body} onChange={(e) => setEmailForm({ ...emailForm, body: e.target.value })} />
+
+              <div className="mb-3 d-flex justify-content-end">
                 <button className="btn btn-outline-primary w-25" onClick={sendEmail} disabled={emailSending}>
                   {emailSending ? "Sending..." : "Send Composed Email"}
                 </button>
               </div>
 
             </div>
-            
+
           )}
         </>
       )}

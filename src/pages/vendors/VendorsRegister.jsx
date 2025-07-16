@@ -3,45 +3,48 @@ import { useLocation, useParams } from 'react-router-dom';
 import axios from 'axios';
 import API_BASE_URL from '../../config/Api';
 import CommonForm from '../../components/CommonForm';
+import statesJson from "../../components/states.json"; // adjust path if needed
+import QandA from "../../components/QandA"; // adjust path if needed
 
 const vendorFields = [
-  { name: 'DateTime', label: 'Date & Time', type: 'datetime-local', readonly: true, disabled: true },
-  { name: 'ClientId', label: 'Client ID', type: 'text', readOnly: true, disabled: true },
-  { name: 'vendorcode', label: 'Vendor Code', type: 'text' },
-  { name: 'vendorcompanyname', label: 'Vendor Company Name', type: 'text' },
-  { name: 'Fname', label: 'First Name', type: 'text' },
-  { name: 'Lname', label: 'Last Name', type: 'text' },
-  { name: 'Email', label: 'Email', type: 'email', required: true },
-  { name: 'Password', label: 'Password', type: 'password' },
-  { name: 'City', label: 'City', type: 'text' },
-  { name: 'Address1', label: 'Address 1', type: 'textarea' },
-  { name: 'Address2', label: 'Address 2', type: 'textarea' },
-  { name: 'Aboutus', label: 'About Us', type: 'textarea' },
-  { name: 'State', label: 'State', type: 'text' },
-  { name: 'ZipCode', label: 'Zip Code', type: 'number' },
-  { name: 'Samuin', label: 'SAM UIN', type: 'text' },
-  { name: 'Fein', label: 'FEIN', type: 'number' },
-  { name: 'Duns', label: 'DUNS', type: 'number' },
-  { name: 'Naics1', label: 'NAICS 1', type: 'number' },
-  { name: 'Naics2', label: 'NAICS 2', type: 'number' },
-  { name: 'Naics3', label: 'NAICS 3', type: 'number' },
-  { name: 'Naics4', label: 'NAICS 4', type: 'number' },
-  { name: 'Naics5', label: 'NAICS 5', type: 'number' },
-  { name: 'Nigp1', label: 'NIGP 1', type: 'number' },
-  { name: 'Nigp2', label: 'NIGP 2', type: 'number' },
-  { name: 'Nigp3', label: 'NIGP 3', type: 'number' },
-  { name: 'Nigp4', label: 'NIGP 4', type: 'number' },
-  { name: 'Nigp5', label: 'NIGP 5', type: 'number' },
-  { name: 'Phone', label: 'Phone', type: 'number' },
-  { name: 'Mobile', label: 'Mobile', type: 'number' },
-  { name: 'Sbclass', label: 'Small Business Certification', type: 'text' },
-  { name: 'Class', label: 'Business Classification', type: 'text' },
-  { name: 'UserId', label: 'User ID', type: 'text' },
-  { name: 'SecQuestion', label: 'Security Question', type: 'text' },
-  { name: 'SecAnswer', label: 'Security Answer', type: 'text' },
-  { name: 'profileImage', label: 'Profile Image (must be 150x150 in px)', type: 'file', accept: '.jpg,.jpeg,.png' },
-  { name: "docx", label: "Upload Document (max 1mb)", type: "file", accept: ".pdf,.doc,.docx" },
-  { name: 'Type', label: 'Type', type: 'select', options: [{ value: '2', label: 'Type 2' }] }
+  { name: 'vendorcode', label: 'Vendor Code', type: 'text', required: true },
+  { name: "vendorcompanyname", label: "Company Name", type: "text", required: true },
+  { name: "Fname", label: "First Name", type: "text", required: true },
+  { name: "Lname", label: "Last Name", type: "text" },
+  { name: "Email", label: "Email", type: "email", required: true },
+  { name: "Address1", label: "Address 1", type: "text", required: true },
+  { name: "Address2", label: "Address 2", type: "text" },
+  { name: "City", label: "City", type: "text", },
+  { name: "State", label: "State", type: "select", options: statesJson.map(state => ({ label: state, value: state })), required: true },
+  { name: "ZipCode", label: "Zip Code", type: "text", required: true },
+  { name: "Samuie", label: "Sam UIE", type: "text" },
+  { name: "Fein", label: "FEIN", type: "text" },
+  { name: "Duns", label: "DUNS", type: "text" },
+  { name: "CAGE", label: "CAGE Code", type: "text" },
+  { name: "Naics1", label: "NAICS 1", type: "text" },
+  { name: "Naics2", label: "NAICS 2", type: "text" },
+  { name: "Naics3", label: "NAICS 3", type: "text" },
+  { name: "Naics4", label: "NAICS 4", type: "text" },
+  { name: "Naics5", label: "NAICS 5", type: "text" },
+  { name: "Nigp1", label: "NIGP 1", type: "text" },
+  { name: "Nigp2", label: "NIGP 2", type: "text" },
+  { name: "Nigp3", label: "NIGP 3", type: "text" },
+  { name: "Nigp4", label: "NIGP 4", type: "text" },
+  { name: "Nigp5", label: "NIGP 5", type: "text" },
+  { name: "Phone", label: "Phone", type: "text" },
+  { name: "Mobile", label: "Mobile", type: "text", required: true },
+  { name: "Sbclass", label: "Small Business Classification", type: "select", options: QandA.smallBusiness.map(item => ({ label: item, value: item })) },
+  { name: "Class", label: "Business Classification", type: "select", options: QandA["Business Classification"].map(item => ({ label: item, value: item })) },
+  { name: "URL", label: "Company URL", type: "text" },
+  { name: "Password", label: "Password", type: "password", required: true },
+  { name: "SecQuestion", label: "Security Question", type: "text" },
+  { name: "SecAnswer", label: "Security Answer", type: "text" },
+  { name: 'profileImage', label: 'Profile Image (must be 150x150 in px)', type: 'file', accept: '.jpg,.jpeg,.png', required: true },
+  { name: "docx", label: "Upload Document (max 1mb)", type: "file", accept: ".pdf,.doc,.docx", required: true },
+  { name: "Aboutus", label: "About Us", type: "textarea", rows: 4 },
+  { name: 'Type', type: 'text', options: [{ value: '2', label: 'Type 2' }] },
+  { name: 'DateTime', type: 'text' },
+  { name: 'ClientId', type: 'text' },
 ];
 
 export default function vendorRegister() {
@@ -77,16 +80,21 @@ export default function vendorRegister() {
       const data = new FormData();
 
       // Append all form fields to FormData
+      data.append("ClientId", formData.ClientId);
+      data.append("vendorcode", formData.vendorcode);
+
+      // Add the rest
       for (const key in formData) {
-        if (formData.hasOwnProperty(key)) {
-          // For file inputs, append the file itself
-          if (formData[key] instanceof File) {
-            data.append(key, formData[key]);
-          } else {
-            data.append(key, formData[key]);
-          }
+        if (["ClientId", "vendorcode"].includes(key)) continue;
+
+        const value = formData[key];
+        if (value instanceof File) {
+          data.append(key, value);
+        } else {
+          data.append(key, value);
         }
       }
+
 
       // ✅ Log all form data before sending
       console.log("Submitting form data:");
@@ -122,6 +130,7 @@ export default function vendorRegister() {
 
 
     } catch (error) {
+      console.error("Full error object:", error);
       const msg = error.response?.data?.message || error.message || 'Failed to register vendor.';
       alert(`Error: ${msg}`);
     }

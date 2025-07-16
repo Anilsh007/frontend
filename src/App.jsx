@@ -6,13 +6,14 @@ import Profile from './dashboard/Profile';
 import Settings from './dashboard/Settings';
 import NotFound from './pages/NotFound';
 import Vendors from './pages/vendors/Vendors';
-import Home from './pages/superAdmin/Home';
-import About from './pages/superAdmin/About';
+import Home from './pages/landingPage/Home';
+import About from './pages/landingPage/About';
 import PrivateRoute from './pages/auth/PrivateRoute';
 import VendorDetail from './pages/vendors/VendorDetail';
 import VendorsRegister from './pages/vendors/VendorsRegister';
 import ClientUser from './dashboard/ClientUser';
 import AdminVendors from './dashboard/AdminVendor/AdminVendors';
+import CommonLogin from './pages/landingPage/CommonLogin';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
       <Routes>
         <Route element={<Home />}>
           <Route path="/" element={<About />} />
+          <Route path="/login" element={<CommonLogin />} />
         </Route>
 
         {/* vendors */}

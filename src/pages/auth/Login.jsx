@@ -18,21 +18,32 @@ export default function Login() {
       password: password.trim(),
     };
 
+    let data = null;
+    let res = null;
+
     try {
-      // Try client-admins/login first
-      let res = await fetch(`${API_BASE_URL}/client-admins/login`, {
+      // 1. Try client-admins/login
+      res = await fetch(`${API_BASE_URL}/client-admins/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(credentials),
       });
+      data = await res.json();
 
-      let data = await res.json();
+      // 2. If Unauthorized, try vendors/login
+      if (!res.ok && res.status === 401) {
+        console.warn('Trying vendors/login...');
+        res = await fetch(`${API_BASE_URL}/vendors/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(credentials),
+        });
+        data = await res.json();
 
-      if (!res.ok) {
-        // If 401 Unauthorized, try the vendors/login API
-        if (res.status === 401) {
-          console.warn('Trying vendors/login...');
-          res = await fetch(`${API_BASE_URL}/vendors/login`, {
+        // 3. If still Unauthorized, try clientUser/login
+        if (!res.ok && res.status === 401) {
+          console.warn('Trying clientUser/login...');
+          res = await fetch(`${API_BASE_URL}/clientUser/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(credentials),
@@ -40,30 +51,33 @@ export default function Login() {
           data = await res.json();
 
           if (!res.ok) throw new Error(data.message || 'Login failed');
-        } else {
+
+          // Check if Type is exactly 3 for clientUser
+          if (data.user?.Type !== 3) {
+            throw new Error('Only user type 3 is allowed from this login.');
+          }
+        } else if (!res.ok) {
           throw new Error(data.message || 'Login failed');
         }
+      } else if (!res.ok) {
+        throw new Error(data.message || 'Login failed');
       }
 
-      // Successful login here
+      // ✅ If login is successful
       if (data.user) {
         const userType = data.user.Type;
 
         localStorage.setItem('user', JSON.stringify({
-          type: data.user.Type,
+          type: userType,
           sendAdminDetails: data.user,
           vendorCode: data.user.vendorcode,
         }));
 
-
         if (userType === 1 || userType === 3) {
           navigate('/dashboard');
-
         } else if (userType === 2) {
           navigate('/VendorDetail', { state: { vendorcode: data.user.vendorcode } });
-
         } else if (userType === 0) {
-          // Stay on page
           setErrorMsg('Your account is not authorized to log in.');
         } else {
           setErrorMsg('Unknown user type.');
@@ -75,6 +89,7 @@ export default function Login() {
       console.error('Login error:', err);
     }
   };
+
 
 
   return (

@@ -74,3 +74,24 @@ body {
         color: rgb(0, 0, 0);
     }
 }
+
+// commonLogin styles
+.commonLogin {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 92vh;
+    background-color: #f8f9fa;
+
+    img {
+        width: 200px;
+    }
+
+    .loginForm {
+        background: linear-gradient(var(--bs-warning-border-subtle), var(--bs-danger-bg-subtle));
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        padding: 50px;
+        border-radius: 10px;
+        width: 400px;
+    }
+}
