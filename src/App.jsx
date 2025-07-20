@@ -13,7 +13,7 @@ import VendorDetail from './pages/vendors/VendorDetail';
 import VendorsRegister from './pages/vendors/VendorsRegister';
 import ClientUser from './dashboard/ClientUser';
 import AdminVendors from './dashboard/AdminVendor/AdminVendors';
-import CommonLogin from './pages/landingPage/commonLogin';
+import CommonLogin from './pages/landingPage/CommonLogin';
 import AddVendors from './dashboard/AdminVendor/AddVendors';
 
 function App() {
