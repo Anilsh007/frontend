@@ -126,7 +126,7 @@ export default function VendorDetail() {
 
     return (
         <>
-            <Header />
+            <Header getClientId={ClientId}/>
             <div>
                 {clientData && (
                     <>

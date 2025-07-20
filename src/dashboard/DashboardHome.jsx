@@ -13,6 +13,8 @@ export default function DashboardHome() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  console.log("Dashboard Home Admin Data:", getAdminDetails.Type);
+
   const hours = new Date().getHours();
   const greet = hours < 12 ? "Good Morning" : hours < 18 ? "Good Afternoon" : "Good Evening";
 
@@ -91,16 +93,20 @@ export default function DashboardHome() {
                     <p className="m-0">Vendors</p>
                   </div>
                 </div>
-                <div className="d-flex align-items-center">
-                  <div className="bg-warning bg-gradient text-white p-3 rounded-3 me-3">
-                    <HiOutlineUserGroup />
+
+                {(getAdminDetails?.Type === 1 || getAdminDetails?.Type === 2) && (
+                  <div className="d-flex align-items-center">
+                    <div className="bg-warning bg-gradient text-white p-3 rounded-3 me-3">
+                      <HiOutlineUserGroup />
+                    </div>
+                    <div className="d-flex flex-column">
+                      <h2 className="m-0 lh-1">{userCount}</h2>
+                      <p className="m-0">Users</p>
+                    </div>
                   </div>
-                  <div className="d-flex flex-column">
-                    <h2 className="m-0 lh-1">{userCount}</h2>
-                    <p className="m-0">Users</p>
-                  </div>
-                </div>
+                )}
               </div>
+
             )}
           </div>
         </div>

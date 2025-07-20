@@ -5,6 +5,7 @@ import API_BASE_URL from '../../config/Api';
 import CommonForm from '../../components/CommonForm';
 import statesJson from "../../components/states.json"; // adjust path if needed
 import QandA from "../../components/QandA"; // adjust path if needed
+import Header from '../../components/Header';
 
 const vendorFields = [
   { name: 'vendorcode', label: 'Vendor Code', type: 'text', required: true },
@@ -40,11 +41,11 @@ const vendorFields = [
   { name: "SecQuestion", label: "Security Question", type: "text" },
   { name: "SecAnswer", label: "Security Answer", type: "text" },
   { name: 'profileImage', label: 'Profile Image (must be 150x150 in px)', type: 'file', accept: '.jpg,.jpeg,.png', required: true },
-  { name: "docx", label: "Upload Document (max 1mb)", type: "file", accept: ".pdf,.doc,.docx", required: true },
+  { name: "docx", label: "Upload Document (max 1mb)", type: "file", accept: ".pdf", required: true },
   { name: "Aboutus", label: "About Us", type: "textarea", rows: 4 },
-  { name: 'Type', type: 'text', options: [{ value: '2', label: 'Type 2' }] },
-  { name: 'DateTime', type: 'text' },
-  { name: 'ClientId', type: 'text' },
+  { name: 'Type', type: 'hidden', options: [{ value: '2', label: 'Type 2' }] },
+  { name: 'DateTime', type: 'hidden' },
+  { name: 'ClientId', type: 'hidden' },
 ];
 
 export default function vendorRegister() {
@@ -139,24 +140,25 @@ export default function vendorRegister() {
 
   return (
     <>
-      <div className="bg-primary text-white py-3 px-3 mb-4">
-        <div className="container">
-          <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
-            <div>
-              <h3 className="mb-1">New Vendor Registration</h3>
-              <p className="mb-0">Register your company</p>
-            </div>
-            <div className="mt-3 mt-md-0">
-              <span className="fw-bold fs-5 text-white">
-                Client Name: <span className="text-warning">{ClientId}</span>
-              </span>
+      <Header />
+
+      <div className="container mt-5">
+
+        <div className="bg-black text-white py-3 px-3 mb-4">
+          <div className="container">
+            <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
+              <div>
+                <h3 className="mb-1">New Vendor Registration</h3>
+                <p className="mb-0">Register your company</p>
+              </div>
+              <div className="mt-3 mt-md-0">
+                <span className="fw-bold fs-5 text-white">
+                  Client Name: <span className="text-warning">{ClientId}</span>
+                </span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-
-
-      <div className="container mt-5">
 
         <CommonForm
           fields={vendorFields}

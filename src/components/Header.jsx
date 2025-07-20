@@ -1,7 +1,7 @@
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import logo from '../../src/assets/white.png';
 
-export default function Header({ clientLogo, passClientId }) {
+export default function Header({ clientLogo, passClientId, getClientId }) {
   const navigate = useNavigate();
   const location = useLocation();
   const path = location.pathname;
@@ -14,7 +14,7 @@ export default function Header({ clientLogo, passClientId }) {
   const handleLogout = (e) => {
     e.preventDefault();
     localStorage.removeItem('user');
-    navigate('/');
+    navigate(`/cvcsem/${getClientId}`); // Redirect to the home page after logout
   };
 
   const homeMenu = [

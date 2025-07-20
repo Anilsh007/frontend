@@ -11,29 +11,13 @@ import { IoCloseSharp } from "react-icons/io5";
 const fileBaseURL = API_BASE_URL.replace(/\/api$/, "") + "/uploads/";
 
 const columns = [
-  { key: "vendorcode", label: "Vendor Code" },
   { key: "vendorcompanyname", label: "Company Name" },
-  {
-    key: "Full name",
-    label: "Name",
-    render: (_, row) => [row.Fname, row.Lname].filter(Boolean).join(" "),
-  },
+  { key: "Full name", label: "Name", render: (_, row) => [row.Fname, row.Lname].filter(Boolean).join(" "), },
   { key: "Email", label: "Email" },
-  { key: "Mobile", label: "Mobile" },
-  { key: "Duns", label: "DUNS" },
-  { key: "Naics1", label: "NAICS 1" },
-  { key: "Naics2", label: "NAICS 2" },
-  { key: "Naics3", label: "NAICS 3" },
-  { key: "Naics4", label: "NAICS 4" },
-  { key: "Naics5", label: "NAICS 5" },
-  { key: "Nigp1", label: "Nigp 1" },
-  { key: "Nigp2", label: "Nigp 2" },
-  { key: "Nigp3", label: "Nigp 3" },
-  { key: "Nigp4", label: "Nigp 4" },
-  { key: "Nigp5", label: "Nigp 5" },
+  { key: "Phone", label: "Phone" },
   {
     key: "docx",
-    label: "Document",
+    label: "Capability Statement",
     type: "file",
     render: (val) =>
       val ? (
@@ -61,6 +45,8 @@ export default function AdminVendors() {
   const [error, setError] = useState(null);
   const [selectedRows, setSelectedRows] = useState([]);
   const [showEmailForm, setShowEmailForm] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
+
 
   const {
     emailForm,
@@ -120,7 +106,12 @@ export default function AdminVendors() {
 
   return (
     <div className="mt-5">
-      <SearchDocument vendors={vendors} setFilteredVendors={setFilteredVendors} />
+      <SearchDocument
+        vendors={vendors}
+        setFilteredVendors={setFilteredVendors}
+        setHasSearched={setHasSearched}
+      />
+
 
       {loading && (
         <div className="text-center py-3">
@@ -131,7 +122,13 @@ export default function AdminVendors() {
 
       {error && <div className="alert alert-danger">{error}</div>}
 
-      {!loading && !error && (
+      {!loading && !error && !hasSearched && (
+        <div className="alert alert-info mt-3">
+          Please search to view vendor results.
+        </div>
+      )}
+
+      {!loading && !error && hasSearched && (
         <>
           <CommonTable
             columns={columns}

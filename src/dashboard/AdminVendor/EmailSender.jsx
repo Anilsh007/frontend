@@ -12,7 +12,7 @@ export default function EmailSender(vendors = []) {
         to: "",              // Admin email (auto-filled)
         cc: "",
         bcc: "",             // All selected vendor emails
-        subject: "Selected Vendor Info",
+        subject: "",
         body: "",            // Empty to allow custom message
         attachments: [],
     });

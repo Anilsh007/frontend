@@ -3,7 +3,7 @@ import { useState } from "react";
 import QandA from "../../components/QandA";
 import states from "../../components/states";
 
-export default function SearchDocument({ vendors, setFilteredVendors }) {
+export default function SearchDocument({ vendors, setFilteredVendors, setHasSearched }) {
   const [showSearchDoc, setShowSearchDoc] = useState(false); // Toggle between search modes
   const [searchCode, setSearchCode] = useState("");
 
@@ -114,6 +114,7 @@ export default function SearchDocument({ vendors, setFilteredVendors }) {
     });
 
     setFilteredVendors(filtered);
+    setHasSearched(true);
   };
 
   const searchFields = [
@@ -126,6 +127,13 @@ export default function SearchDocument({ vendors, setFilteredVendors }) {
     const value = e.target.value.toLowerCase();
     setSearchCode(value);
 
+    // If input is empty, reset
+    if (value.trim() === "") {
+      setFilteredVendors([]);
+      setHasSearched(false); // 🔄 Show info message again
+      return;
+    }
+
     const filtered = vendors.filter((vendor) =>
       searchFields.some(
         (key) =>
@@ -137,20 +145,13 @@ export default function SearchDocument({ vendors, setFilteredVendors }) {
     );
 
     setFilteredVendors(filtered);
+    setHasSearched(true);
   };
+
 
   const handleReset = () => {
     setFormData({
       ClientId: "",
-      UserCode: "",
-      Fname: "",
-      Lname: "",
-      Email: "",
-      EIN: "",
-      Duns: "",
-      UEI: "",
-      Naics1: "", Naics2: "", Naics3: "", Naics4: "", Naics5: "",
-      Nigp1: "", Nigp2: "", Nigp3: "", Nigp4: "", Nigp5: "",
       documentSearch: "",
       NAICS: "",
       NIGP: "",
@@ -161,6 +162,7 @@ export default function SearchDocument({ vendors, setFilteredVendors }) {
 
     setFilteredVendors(vendors);   // Reset the table back to full list
     setSearchCode("");             // Clear simple search too (optional)
+    setHasSearched(false);
   };
 
 

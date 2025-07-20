@@ -1,16 +1,21 @@
 import { Outlet } from 'react-router-dom';
-import { ClientContext } from './ClientContext'; // adjust path if needed
+import { ClientContext } from './ClientContext';
 import Sidebar from './Sidebar';
 import Header from '../components/Header';
 
 export default function DashboardLayout() {
   const user = JSON.parse(localStorage.getItem('user'));
   const getAdminDetails = user?.sendAdminDetails;
-  console.log("Admin Details:", getAdminDetails);
+
+  if (!user || !getAdminDetails) {
+    return <p>User not authenticated.</p>; // Or redirect to login
+  }
+
+  const getClientId = getAdminDetails.ClientId;
 
   return (
     <>
-      <Header />
+      <Header getClientId={getClientId} />
       <div className="dashboard-layout">
         <Sidebar adminData={getAdminDetails} />
         <div className="main-content">

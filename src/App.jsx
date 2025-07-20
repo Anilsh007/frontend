@@ -13,7 +13,8 @@ import VendorDetail from './pages/vendors/VendorDetail';
 import VendorsRegister from './pages/vendors/VendorsRegister';
 import ClientUser from './dashboard/ClientUser';
 import AdminVendors from './dashboard/AdminVendor/AdminVendors';
-import CommonLogin from './pages/landingPage/CommonLogin';
+import CommonLogin from './pages/landingPage/commonLogin';
+import AddVendors from './dashboard/AdminVendor/AddVendors';
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
           <Route element={<DashboardLayout />}>
             <Route index element={<DashboardHome />} />
             <Route path="DashboardHome" element={<DashboardHome />} />
+            <Route path="AddVendors" element={<AddVendors />} />
             <Route path="profile" element={<Profile />} />
             <Route path="settings" element={<Settings />} />
             <Route path="ClientUser" element={<ClientUser />} />
