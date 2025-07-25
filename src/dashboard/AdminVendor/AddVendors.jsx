@@ -5,9 +5,11 @@ import CommonForm from '../../components/CommonForm';
 import { useClient } from "../ClientContext";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import CommonTable from '../../components/CommonTable';
 import { MdOutlinePreview } from 'react-icons/md';
+import { BsDatabaseAdd } from "react-icons/bs";
+import { RiResetLeftFill } from "react-icons/ri";
 import EmailSender from './EmailSender';
+import { IoMdLogIn } from 'react-icons/io';
 
 const vendorFields = [
   { name: 'vendorcode', label: 'Vendor Code', type: 'text', required: true },
@@ -16,7 +18,6 @@ const vendorFields = [
   { name: "Lname", label: "Last Name", type: "text", required: true },
   { name: "Email", label: "Email", type: "email", required: true },
   { name: "Phone", label: "Phone", type: "text", required: true },
-  { name: "Password", label: "Password", type: "password", required: true },
   { name: 'profileImage', label: 'Profile Image (must be 150x150 in px)', type: 'file', accept: '.jpg,.jpeg,.png', required: true },
   { name: "docx", label: "Upload Document (max 1mb)", type: "file", accept: ".pdf", required: true },
 ];
@@ -87,7 +88,7 @@ export default function AddVendors() {
     profileImage: '',
     Aboutus: '', SecAnswer: '', SecQuestion: '', URL: '', Mobile: '',
     Nigp5: '', Nigp4: '', Nigp3: '', Nigp2: '', Nigp1: '',
-    Naics5: '', Naics4: '', Naics3: '', Naics2: '', Naics1: '',
+    Naics5: '', Naics4: '', Naics3: '', Naics2: '', Naics1: '', Password: 'CVCSEM',
     CAGE: '', Duns: '', Fein: '', Samuie: '', ZipCode: '', State: '', City: '', Address2: '', Address1: '', Sbclass: '', Class: '',
   });
 
@@ -229,22 +230,13 @@ export default function AddVendors() {
     <>
       <ToastContainer position="top-center" autoClose={5000} hideProgressBar={false} />
 
-      <div className="d-flex">
-        <h2 className="me-auto">Add Vendors</h2>
-        <button className='btn btn-outline-primary w-25' onClick={handleClick}>Add Vendors</button>
+      <h5 className="text-primary">Add New Vendor</h5>
+      <CommonForm fields={vendorFields} formData={formData} setFormData={setFormData} onSubmit={handleRegister} showSubmit={false} />
+      <div className="d-flex justify-content-end gap-2 mt-2">
+        <button className="btn btn-outline-secondary" onClick={handleReset}>Reset <IoMdLogIn /></button>
+        <button className="btn btn-outline-primary" onClick={handleRegister}>Register <BsDatabaseAdd /></button>
       </div>
 
-      {formVisible && (
-        <>
-          <CommonForm fields={vendorFields} formData={formData} setFormData={setFormData} onSubmit={handleRegister} showSubmit={false} />
-          <div className="d-flex justify-content-end gap-2 mt-2">
-            <button className="btn btn-outline-secondary w-25" onClick={handleReset}>Reset</button>
-            <button className="btn btn-outline-primary w-25" onClick={handleRegister}>Register</button>
-          </div>
-        </>
-      )}
-
-      <CommonTable columns={columns} data={filteredVendors} />
     </>
   );
 }

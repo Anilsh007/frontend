@@ -7,6 +7,8 @@ import { MdAttachFile, MdOutlineContactMail, MdOutlinePreview } from "react-icon
 import SearchDocument from "./SearchDocument";
 import EmailSender from "./EmailSender";
 import { IoCloseSharp } from "react-icons/io5";
+import { ToastContainer } from "react-toastify";
+import { BiMailSend } from "react-icons/bi";
 
 const fileBaseURL = API_BASE_URL.replace(/\/api$/, "") + "/uploads/";
 
@@ -89,7 +91,6 @@ export default function AdminVendors() {
         const data = Array.isArray(response.data) ? response.data : [response.data];
         setVendors(data);
         setFilteredVendors(data);
-        console.log("Total vendors:", data.length);
       } catch (err) {
         if (err.response?.status === 401) {
           setError("Unauthorized. Please log in again.");
@@ -106,6 +107,9 @@ export default function AdminVendors() {
 
   return (
     <div className="mt-5">
+
+      <ToastContainer position="top-center" autoClose={5000} hideProgressBar={false} />
+
       <SearchDocument
         vendors={vendors}
         setFilteredVendors={setFilteredVendors}
@@ -136,6 +140,7 @@ export default function AdminVendors() {
             showCheckbox={true}
             selectedRows={selectedRows}
             onRowSelect={setSelectedRows}
+            className="custom-table"
           />
 
           {showEmailForm && (
@@ -233,9 +238,9 @@ export default function AdminVendors() {
 
               <textarea rows={6} placeholder="Compose your mail" className="form-control mt-2" value={emailForm.body} onChange={(e) => setEmailForm({ ...emailForm, body: e.target.value })} />
 
-              <div className="mb-3 d-flex justify-content-end">
+              <div className="d-flex justify-content-end">
                 <button className="btn btn-outline-primary w-25" onClick={sendEmail} disabled={emailSending}>
-                  {emailSending ? "Sending..." : "Send Composed Email"}
+                  {emailSending ? "Sending..." : "Send Composed Email"} <BiMailSend />
                 </button>
               </div>
 

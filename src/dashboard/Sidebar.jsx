@@ -32,11 +32,6 @@ export default function Sidebar({ adminData }) {
       icon: <GiChaingun />
     },
     {
-      name: "Add Vendors",
-      link: "AddVendors",
-      icon: <GiChaingun />
-    },
-    {
       name: "Profile",
       link: "profile",
       icon: <FaRegUser />

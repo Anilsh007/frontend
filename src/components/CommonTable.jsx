@@ -7,6 +7,7 @@ export default function CommonTable({
   showCheckbox = false,
   onRowSelect = () => {},
   selectedRows = [],
+  className = "",
 }) {
   const [selectAll, setSelectAll] = useState(false);
 
@@ -28,7 +29,7 @@ export default function CommonTable({
   };
 
   return (
-    <div className="mt-4 table-responsive">
+    <div className={`mt-4 table-responsive ${className}`}>
       {title && <h4 className="mb-3">{title}</h4>}
 
       {data.length === 0 ? (

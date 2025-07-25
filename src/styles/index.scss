@@ -4,6 +4,135 @@ body {
     font-family: sans-serif;
 }
 
+// App_header css
+.App_header {
+    background: #116aef;
+    position: sticky;
+
+    .navbar {
+        padding: 0;
+
+        .container-fluid {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .logo-div {
+                img {
+                    width: 40px;
+                }
+            }
+
+            ul {
+                list-style: none;
+                display: flex;
+                line-height: normal;
+                padding: 0;
+                margin: 0 0 0 0;
+
+                li {
+
+                    a,
+                    button {
+                        color: #fff;
+                        text-decoration: none;
+                        padding: 15px 15px;
+                        display: block;
+                        transition: 0.5s all;
+                        margin: auto;
+                        border: navajowhite;
+                        background: #f0f8ff00;
+
+                        &:hover {
+                            background-color: #000 !important;
+                            transition: 0.5s all;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.hero-section {
+    background-image: url('../assets/home_baner.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 60vh;
+}
+
+.hero-section h1,
+.hero-section p {
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.6);
+    color: black;
+}
+
+.icon-box {
+    font-size: 2rem;
+    color: #0d6efd;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    transition: all 0.3s ease;
+}
+
+
+.card_container {
+    margin-top: 8vh;
+    display: flex;
+    justify-content: space-evenly;
+
+    .card {
+        background-image: linear-gradient(to top left, var(--bs-info-bg-subtle), var(--bs-warning-bg-subtle));
+
+        svg {
+            width: 70px;
+            height: 70px;
+            margin: 10px auto;
+            color: #116aef;
+        }
+
+        text-align: center;
+        margin: 20px 0;
+        width: 340px;
+        padding: 20px;
+        box-shadow: 0 0 15px 0 #999;
+    }
+}
+
+@keyframes bgPulse {
+    0% {
+        background-color: #ffe3f9;
+    }
+
+    /* light pink */
+    25% {
+        background-color: #dcfaff;
+    }
+
+    /* light blue */
+    50% {
+        background-color: #d1ffd1;
+    }
+
+    /* light green */
+    75% {
+        background-color: #fff9d4;
+    }
+
+    /* light yellow */
+    100% {
+        background-color: #ffe3f9;
+    }
+
+    /* match 0% for smooth loop */
+}
+
+.bg-pulse {
+    animation: bgPulse 10s ease-in-out infinite;
+}
+
 .vendor-baner {
     height: 300px !important;
     width: 100%;

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import API_BASE_URL from '../../config/Api';
+import { IoMdLogIn } from 'react-icons/io';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -105,7 +106,7 @@ export default function Login() {
           <label className="form-label" htmlFor="passwordInput">Password</label>
           <input id="passwordInput" type="password" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="current-password" required />
         </div>
-        <button className="btn btn-outline-primary w-100" type="submit">LOG IN</button>
+        <button className="btn btn-outline-primary w-100" type="submit">LOG IN <IoMdLogIn /></button>
       </form>
       <Link to="/forgot-password" className="d-block mt-2 text-center">Forgot Password? Click Here</Link>
     </>

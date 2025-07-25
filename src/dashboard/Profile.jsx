@@ -1,3 +1,4 @@
+import { BsDatabaseAdd } from 'react-icons/bs';
 import { useClient } from './ClientContext';
 
 export default function Profile() {
@@ -9,7 +10,12 @@ export default function Profile() {
 
   return (
     <>
-      <div className="d-flex justify-content-between align-items-center bg-primary text-white p-3 rounded mt-5">
+
+      <div className='clearfix mb-3'>
+        <button className="btn btn-outline-primary mt-3 float-end mb-3">Update Details <BsDatabaseAdd /></button>
+      </div>
+
+      <div className="d-flex justify-content-between align-items-center bg-primary text-white p-3 rounded">
         <div>
           <h2>{getAdminDetails.FirstName} {getAdminDetails.LastName}</h2>
           <p>Email: <strong>{getAdminDetails.AdminEmail}</strong></p>
@@ -50,7 +56,7 @@ export default function Profile() {
           <p>Q: {getAdminDetails.Question}</p>
           <p>A: {getAdminDetails.Answer}</p>
         </div>
-        <div className="p-3 bg-light rounded text-dark">
+        <div className="p-3 bg-light rounded text-dark border">
           <h5>Identifiers</h5>
           <p>ID: {getAdminDetails.id}</p>
           <p>Type: {getAdminDetails.Type}</p>
@@ -78,9 +84,6 @@ export default function Profile() {
         </div>
       </div>
 
-      <button className="btn btn-outline-primary mt-3">
-        Update Details
-      </button>
     </>
   );
 }

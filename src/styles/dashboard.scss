@@ -170,7 +170,7 @@
   margin: auto;
 }
 
-table {
+.custom-table {
 
   thead,
   tbody {
@@ -198,6 +198,7 @@ table {
     border-radius: 20px;
     margin: 0;
     align-items: baseline;
+
     button {
       background-color: #ffffff00;
       border: none;

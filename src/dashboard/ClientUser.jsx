@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from "react";
 import API_BASE_URL from "../config/Api";
 import CommonForm from "../components/CommonForm";
+import CommonTable from "../components/CommonTable"; // ✅ Import your reusable table
 import { useClient } from "./ClientContext";
 import { LiaEdit } from "react-icons/lia";
 import { RiDeleteBinLine } from "react-icons/ri";
+import { FiUserPlus } from "react-icons/fi";
+import { BsDatabaseAdd } from "react-icons/bs";
+import { MdOutlineSystemUpdateAlt } from "react-icons/md";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const initialForm = {
   ClientId: "",
@@ -16,18 +22,17 @@ const initialForm = {
   Gender: "",
   Question: "",
   Answer: "",
-  DateTime: "", // will set automatically on submit
+  DateTime: "",
   Type: "3",
-  profileImage: null, // file object
+  profileImage: null,
 };
 
 export default function ClientUser() {
   const { getAdminDetails } = useClient();
-  const [clientUsers, setClientUsers] = useState([]);  // fixed typo: clientUser -> clientUsers
+  const [clientUsers, setClientUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  const [showModal, setShowModal] = useState(false);
+  const [showForm, setShowForm] = useState(false);
   const [formError, setFormError] = useState("");
   const [formData, setFormData] = useState(initialForm);
   const [editId, setEditId] = useState(null);
@@ -38,12 +43,12 @@ export default function ClientUser() {
     { name: "Fname", label: "First Name", type: "text", required: true },
     { name: "Lname", label: "Last Name", type: "text", required: true },
     { name: "Email", label: "Email", type: "email", required: true },
-    { 
-      name: "Password", 
-      label: "Password", 
-      type: "password", 
-      required: !editId,  // required only if adding new user
-      placeholder: editId ? "Leave blank to keep current password" : "" 
+    {
+      name: "Password",
+      label: "Password",
+      type: "password",
+      required: !editId, // required only when adding
+      placeholder: editId ? "Leave blank to keep current password" : "",
     },
     { name: "Mobile", label: "Mobile", type: "text" },
     {
@@ -76,10 +81,11 @@ export default function ClientUser() {
     },
   ];
 
-  // Load users on mount or when getAdminDetails changes
+
   useEffect(() => {
     if (!getAdminDetails || !getAdminDetails.ClientId) {
       setError("Client ID not available");
+      toast.error("Client ID not available");
       setLoading(false);
       return;
     }
@@ -106,22 +112,21 @@ export default function ClientUser() {
       setClientUsers(data);
     } catch (err) {
       setError(err.message);
+      toast.error(err.message || "Error fetching users");
     } finally {
       setLoading(false);
     }
   };
 
-  const openModal = (user = null) => {
+  const openUserForm = (user = null) => {
     if (user) {
-      // Load user data for edit, clear file input
       setFormData({
         ...user,
         profileImage: null,
-        Password: "", // Clear password input when editing
+        Password: "",
       });
       setEditId(user.id);
     } else {
-      // New user, set ClientId from admin details
       setFormData({
         ...initialForm,
         ClientId: getAdminDetails.ClientId,
@@ -129,11 +134,11 @@ export default function ClientUser() {
       setEditId(null);
     }
     setFormError("");
-    setShowModal(true);
+    setShowForm((show) => !show);
   };
 
   const closeModal = () => {
-    setShowModal(false);
+    setShowForm(false);
     setFormError("");
     setFormData(initialForm);
     setEditId(null);
@@ -145,8 +150,6 @@ export default function ClientUser() {
 
     try {
       const formPayload = new FormData();
-
-      // Append formData fields
       Object.entries(formData).forEach(([key, val]) => {
         if (key === "profileImage") {
           if (val) formPayload.append("profileImage", val);
@@ -154,8 +157,6 @@ export default function ClientUser() {
           formPayload.append(key, val || "");
         }
       });
-
-      // Set current date time
       formPayload.set("DateTime", new Date().toISOString());
 
       const url = editId
@@ -167,20 +168,22 @@ export default function ClientUser() {
         method,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
-          // Don't set Content-Type; let browser set it for FormData
         },
         body: formPayload,
       });
 
       if (!res.ok) {
         const errorData = await res.json();
+        toast.error(errorData.message || "Failed to save user");
         throw new Error(errorData.message || "Failed to save user");
       }
 
       await fetchUsers();
       closeModal();
+      toast.success(editId ? "User updated successfully" : "User registered successfully");
     } catch (err) {
       setFormError(err.message);
+      toast.error(err.message);
     }
   };
 
@@ -196,149 +199,119 @@ export default function ClientUser() {
       });
       if (!res.ok) {
         const errorData = await res.json();
+        toast.error(errorData.message || "Failed to delete user");
         throw new Error(errorData.message || "Failed to delete user");
       }
       await fetchUsers();
+      toast.success("User deleted successfully");
     } catch (err) {
-      alert(err.message);
+      toast.error(err.message);
     }
   };
 
+  const columns = [
+    {
+      key: "DateTime",
+      label: "Date & Time",
+      render: (val) => new Date(val).toLocaleString(),
+    },
+    { key: "ClientId", label: "Client ID" },
+    { key: "UserCode", label: "User Code" },
+    { key: "Fname", label: "First Name" },
+    { key: "Lname", label: "Last Name" },
+    { key: "Email", label: "Email" },
+    { key: "Mobile", label: "Mobile" },
+    { key: "Gender", label: "Gender" },
+    {
+      key: "profileImage",
+      label: "Profile",
+      type: "image",
+      render: (val) =>
+        val ? (
+          <img
+            src={`${API_BASE_URL.replace(/\/api$/, "")}/uploads/${val}`}
+            alt="Profile"
+            style={{ width: 50, height: 50, borderRadius: "50%", objectFit: "cover" }}
+          />
+        ) : (
+          <div
+            style={{
+              width: 50,
+              height: 50,
+              borderRadius: "50%",
+              backgroundColor: "#ccc",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontWeight: "bold",
+              color: "#666",
+            }}
+          >
+            N/A
+          </div>
+        ),
+    },
+    { key: "Type", label: "Type" },
+    {
+      key: "actions",
+      label: "Actions",
+      render: (_, item) => (
+        <div className="d-flex">
+          <button
+            className="btn btn-outline-primary me-2 w-auto"
+            onClick={() => openUserForm(item)}
+          >
+            <LiaEdit />
+          </button>
+          <button
+            className="btn btn-outline-danger w-auto"
+            onClick={() => handleDelete(item.id)}
+          >
+            <RiDeleteBinLine />
+          </button>
+        </div>
+      ),
+    },
+  ];
+
   return (
-    <div className="container mt-5">
+    <>
+      <ToastContainer position="top-center" autoClose={5000} hideProgressBar={false} />
+
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2>Client Users</h2>
-        <button className="btn btn-outline-primary w-25" onClick={() => openModal()}>
-          Add User
+        <button className="btn btn-outline-primary" onClick={() => openUserForm()}>
+          Add User <FiUserPlus />
         </button>
       </div>
 
-      {error && <div className="alert alert-danger">{error}</div>}
+      {showForm && (
+        <>
+          <CommonForm
+            fields={formFields}
+            formData={formData}
+            setFormData={setFormData}
+            onSubmit={handleSubmit}
+            buttonLabel={
+              editId ? (
+                <>
+                  Update <MdOutlineSystemUpdateAlt />
+                </>
+              ) : (
+                <>
+                  Register <BsDatabaseAdd />
+                </>
+              )
+            }
+          />
+        </>
+      )}
 
       {loading ? (
         <div className="text-center text-muted">Loading users...</div>
-      ) : clientUsers.length === 0 ? (
-        <div className="text-center text-muted">No users found.</div>
       ) : (
-        <table className="table table-striped table-bordered">
-          <thead>
-            <tr>
-              <th>Date & Time</th>
-              <th>Client ID</th>
-              <th>User Code</th>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Email</th>
-              <th>Mobile</th>
-              <th>Gender</th>
-              <th>Profile</th>
-              <th>Type</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {clientUsers.map((user) => {
-              const profileUrl = user.profileImage
-                ? `${API_BASE_URL.replace(/\/api$/, "")}/uploads/${user.profileImage}`
-                : null;
-              return (
-                <tr key={user.id}>
-                  <td>{new Date(user.DateTime).toLocaleString()}</td>
-                  <td>{user.ClientId}</td>
-                  <td>{user.UserCode}</td>
-                  <td>{user.Fname}</td>
-                  <td>{user.Lname}</td>
-                  <td>{user.Email}</td>
-                  <td>{user.Mobile}</td>
-                  <td>{user.Gender}</td>
-                  <td>
-                    {profileUrl ? (
-                      <img
-                        src={profileUrl}
-                        alt="Profile"
-                        style={{
-                          width: 50,
-                          height: 50,
-                          objectFit: "cover",
-                          borderRadius: "50%",
-                        }}
-                      />
-                    ) : (
-                      <div
-                        style={{
-                          width: 50,
-                          height: 50,
-                          borderRadius: "50%",
-                          backgroundColor: "#ccc",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          fontWeight: "bold",
-                          color: "#666",
-                        }}
-                      >
-                        N/A
-                      </div>
-                    )}
-                  </td>
-                  <td>{user.Type}</td>
-                  <td className="d-flex">
-                    <button
-                      className="btn btn-outline-primary me-2"
-                      onClick={() => openModal(user)}
-                    >
-                      <LiaEdit />
-                    </button>
-                    <button
-                      className="btn btn-outline-danger"
-                      onClick={() => handleDelete(user.id)}
-                    >
-                      <RiDeleteBinLine />
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+        <CommonTable columns={columns} data={clientUsers} />
       )}
-
-      {showModal && (
-        <div
-          className="modal fade show"
-          style={{ display: "block", backgroundColor: "rgba(0,0,0,0.5)" }}
-          tabIndex="-1"
-          role="dialog"
-        >
-          <div
-            className="modal-dialog modal-lg modal-dialog-scrollable"
-            role="document"
-          >
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">{editId ? "Edit User" : "Add User"}</h5>
-                <button
-                  type="button"
-                  className="btn-close"
-                  onClick={closeModal}
-                ></button>
-              </div>
-              <div className="modal-body">
-                <CommonForm
-                  fields={formFields}
-                  formData={formData}
-                  setFormData={setFormData}
-                  onSubmit={handleSubmit}
-                  buttonLabel={editId ? "Update" : "Create"}
-                />
-                {formError && (
-                  <div className="alert alert-danger mt-3">{formError}</div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
+    </>
   );
 }

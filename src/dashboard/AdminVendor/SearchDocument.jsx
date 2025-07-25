@@ -2,10 +2,17 @@ import CommonForm from "../../components/CommonForm";
 import { useState } from "react";
 import QandA from "../../components/QandA";
 import states from "../../components/states";
+import { MdAddchart } from "react-icons/md";
+import { AiOutlineFileSearch } from "react-icons/ai";
+import AddVendors from "./AddVendors";
+import { RiResetLeftFill } from "react-icons/ri";
+import { TfiSearch } from "react-icons/tfi";
 
 export default function SearchDocument({ vendors, setFilteredVendors, setHasSearched }) {
   const [showSearchDoc, setShowSearchDoc] = useState(false); // Toggle between search modes
   const [searchCode, setSearchCode] = useState("");
+  const [showAddVendor, setShowAddVendor] = useState(false);
+
 
   const [formData, setFormData] = useState({
     ClientId: "",
@@ -167,35 +174,46 @@ export default function SearchDocument({ vendors, setFilteredVendors, setHasSear
 
 
   return (
-    <div className="mt-4">
+    <div>
+      {/* ✅ Always Visible Toolbar */}
       <div className="d-flex align-items-center justify-content-between">
-        <h2>Vendors</h2>
+        <h2 className="w-75">Vendors</h2>
+
         <button
-          className="btn btn-outline-primary w-25"
-          onClick={toggleSearchMode}
+          className='btn btn-outline-primary'
+          onClick={() => setShowAddVendor((prev) => !prev)}
         >
-          {showSearchDoc ? "Simple Search" : "Advanced Search"}
+          <MdAddchart /> {showAddVendor ? 'Back to Search' : 'Add Vendors'}
         </button>
+
+        {!showAddVendor && (
+          <button
+            className="btn btn-outline-primary ms-3"
+            onClick={toggleSearchMode}
+          >
+            <AiOutlineFileSearch /> {showSearchDoc ? "Simple Search" : "Advanced Search"}
+          </button>
+        )}
       </div>
 
+      {/* ✅ Conditional Content Below Toolbar */}
       <div className="mb-3 mt-3">
-        {showSearchDoc ? (
+        {showAddVendor ? (
+          <AddVendors />
+        ) : showSearchDoc ? (
           <>
             <h5 className="text-primary">Advanced Search</h5>
-            <>
-              <CommonForm
-                fields={formFields}
-                formData={formData}
-                setFormData={setFormData}
-                onSubmit={handleSubmit}
-                showSubmit={false}// hide default button
-              />
-
-              <div className="d-flex justify-content-end gap-2 mt-2">
-                <button className="btn btn-outline-secondary w-25" onClick={handleReset}>Reset</button>
-                <button className="btn btn-outline-primary w-25" onClick={handleSubmit}>Search</button>
-              </div>
-            </>
+            <CommonForm
+              fields={formFields}
+              formData={formData}
+              setFormData={setFormData}
+              onSubmit={handleSubmit}
+              showSubmit={false}
+            />
+            <div className="d-flex justify-content-end gap-2 mt-2">
+              <button className="btn btn-outline-secondary" onClick={handleReset}><RiResetLeftFill /> Reset</button>
+              <button className="btn btn-outline-primary" onClick={handleSubmit}><TfiSearch /> Search</button>
+            </div>
           </>
         ) : (
           <>
@@ -213,4 +231,5 @@ export default function SearchDocument({ vendors, setFilteredVendors, setHasSear
       </div>
     </div>
   );
+
 }
