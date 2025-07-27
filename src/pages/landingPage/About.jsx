@@ -50,7 +50,7 @@ export default function About() {
                         { icon: <FaClock />, title: 'Save Time & Win More', desc: 'Simplify procurement and vendor selection.' }
                     ].map((item, idx) => (
                         <div className="col-md-4" data-aos="zoom-in" data-aos-delay={idx * 100} key={idx}>
-                            <div className="card h-100 shadow-sm border-0 feature-card">
+                            <div className="card h-100 shadow-sm border-1 feature-card">
                                 <div className="card-body text-center">
                                     <div className="icon-box mb-3">{item.icon}</div>
                                     <h5 className="card-title">{item.title}</h5>
@@ -69,7 +69,7 @@ export default function About() {
                     <div className="row g-4">
                         {/* Clients Section */}
                         <div className="col-md-6" data-aos="fade-right">
-                            <div className="p-4 h-100 bg-white shadow-sm border rounded">
+                            <div className="p-4 h-100 bg-white shadow-sm border-1 rounded">
                                 <h4 className="fw-bold mb-3">For Clients & Government Agencies</h4>
                                 <ul className="list-unstyled">
                                     <li>🔹 Efficient Vendor Discovery</li>
@@ -81,7 +81,7 @@ export default function About() {
 
                         {/* Vendors Section */}
                         <div className="col-md-6" data-aos="fade-left">
-                            <div className="p-4 h-100 bg-white shadow-sm border rounded">
+                            <div className="p-4 h-100 bg-white shadow-sm border-1 rounded">
                                 <h4 className="fw-bold mb-3">For Small & Medium Vendors</h4>
                                 <ul className="list-unstyled">
                                     <li>🚀 Showcase Your Strengths</li>
@@ -99,13 +99,13 @@ export default function About() {
             <section className="container py-5">
                 <div className="text-center" data-aos="fade-up">
                     <h3 className="fw-bold mb-3">Why Choose CVCSEM?</h3>
-                    <p className="fs-5 text-muted">
+                    <div className="fs-5 text-muted">
                         <ul className='list-unstyled'>
                             <li>✅ Centralized Access – A smarter marketplace for buyers & vendors</li>
                             <li>✅ Time-Saving Automation – Simplify procurement & partnerships</li>
                             <li>✅ Growth-Oriented Platform – Empowering businesses to succeed</li>
                         </ul>
-                    </p>
+                    </div>
                     <p className='fs-5 text-muted'>CVCSEM is changing the game—bringing efficiency, visibility, and opportunity to business matchmaking. Contact us today and become part of a powerful, streamlined ecosystem that connects businesses in ways never seen before! </p>
                 </div>
             </section>

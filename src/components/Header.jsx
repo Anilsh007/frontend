@@ -1,5 +1,5 @@
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
-import logo from '../../src/assets/white.png';
+import logo from '../../src/assets/logo.png';
 
 export default function Header({ clientLogo, passClientId, getClientId }) {
   const navigate = useNavigate();
