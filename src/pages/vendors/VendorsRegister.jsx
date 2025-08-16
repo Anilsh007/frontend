@@ -56,6 +56,7 @@ export default function vendorRegister() {
   const location = useLocation();
   const passClientId = location.state?.passClientId;
   const ClientId = passClientId;
+  console.log("ClientId from location.state:", ClientId);
 
   const initialFormState = vendorFields.reduce((acc, field) => {
     acc[field.name] = '';
@@ -140,7 +141,7 @@ export default function vendorRegister() {
 
   return (
     <>
-      <Header />
+      <Header passClientId={ClientId} />
 
       <div className="container mt-5">
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import { GrUpdate } from "react-icons/gr";
 
 const CommonForm = ({
   fields,
@@ -14,6 +15,27 @@ const CommonForm = ({
       ...formData,
       [name]: type === 'file' ? files[0] : value,
     });
+  };
+
+  const handleTagInput = (e, fieldName) => {
+    if (e.key === ' ' || e.key === 'Enter') {
+      e.preventDefault();
+      const inputValue = e.target.value.trim();
+      if (inputValue) {
+        const existing = formData[fieldName] || [];
+        if (!existing.includes(inputValue)) {
+          const updated = [...existing, inputValue];
+          setFormData({ ...formData, [fieldName]: updated });
+        }
+        e.target.value = '';
+      }
+    }
+  };
+
+  const removeTag = (fieldName, index) => {
+    const updated = [...(formData[fieldName] || [])];
+    updated.splice(index, 1);
+    setFormData({ ...formData, [fieldName]: updated });
   };
 
   return (
@@ -68,6 +90,34 @@ const CommonForm = ({
                 required={field.required || false}
                 disabled={field.disabled || false}
               />
+            ) : field.type === 'tags' ? (
+              <>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Type name and press space"
+                  onKeyDown={(e) => handleTagInput(e, field.name)}
+                  required={(formData[field.name] || []).length === 0} // Only required if count is 0
+                  disabled={(formData[field.name] || []).length >= 15}
+                />
+                <div className="tags-input">
+                  {(formData[field.name] || []).map((tag, index) => (
+                    <p key={index} className="custom-badge badge bg-primary align-items-center">
+                      {tag}
+                      <button
+                        type="button"
+                        className="btn-close btn-close-black btn-sm ms-2"
+                        aria-label="Remove"
+                        onClick={() => removeTag(field.name, index)}
+                      ></button>
+                    </p>
+                  ))}
+                </div>
+                <div className="text-muted small badge bg-outline-primary">
+                  Total Clients: {(formData[field.name] || []).length}
+                </div>
+              </>
+
             ) : (
               <input
                 type={field.type}
@@ -86,7 +136,9 @@ const CommonForm = ({
 
       <div className="text-end">
         {showSubmit && (
-          <button type="submit" className="btn btn-outline-primary">{buttonLabel}</button>
+          <button type="submit" className="btn btn-outline-primary">
+            {buttonLabel} <GrUpdate />
+          </button>
         )}
       </div>
     </form>

@@ -18,8 +18,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fullcalendar/common": "^5.11.5",
+    "@fullcalendar/core": "^6.1.18",
+    "@fullcalendar/daygrid": "^6.1.18",
+    "@fullcalendar/interaction": "^6.1.18",
+    "@fullcalendar/react": "^6.1.18",
+    "aos": "^2.3.4",
     "axios": "^1.9.0",
     "bootstrap": "^5.3.5",
+    "dompurify": "^3.2.6",
     "mammoth": "^1.9.1",
     "pdfjs-dist": "^5.3.31",
     "react": "^19.0.0",

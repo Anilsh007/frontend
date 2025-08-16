@@ -3,6 +3,7 @@ import { NavLink, useParams } from 'react-router-dom';
 import API_BASE_URL from '../../config/Api';
 import Login from '../auth/Login';
 import Header from '../../components/Header';
+import { LuFolderPen } from "react-icons/lu";
 
 export default function Vendors() {
     const { ClientId } = useParams(); // Get ClientId from URL
@@ -35,8 +36,8 @@ export default function Vendors() {
 
     return (
         <>
-            {error && <div className="alert alert-danger">{error}</div>}
-            {loading && <div>Loading <div className="spinner-border text-primary"></div></div>}
+            {error && <div className="custom-alert alert alert-danger">{error}</div>}
+            {loading && <div className='custom-spinner'>Loading <div className="spinner-border text-primary"></div></div>}
 
             {adminData && (
 
@@ -58,7 +59,7 @@ export default function Vendors() {
                                 />
                             </div>
                             <div className="col-md-8">
-                                <p>{adminData.AboutUs} <NavLink to="/vendorsRegister" state={{ passClientId: ClientId }}> Register Now</NavLink></p>
+                                <p>{adminData.AboutUs} <NavLink to="/vendorsRegister" state={{ passClientId: ClientId }}> Register Now </NavLink></p>
                             </div>
                         </div>
                     </div>
@@ -67,7 +68,7 @@ export default function Vendors() {
                         <div className="box text-center border p-5 rounded">
                             <h3>New Vendor Registration</h3>
                             <p><strong>Register your company</strong></p>
-                            <NavLink to="/vendorsRegister" state={{ passClientId: ClientId }} className="btn btn-outline-primary"> Register Now</NavLink>
+                            <NavLink to="/vendorsRegister" state={{ passClientId: ClientId }} className="btn btn-outline-primary w-100"> Register Now <LuFolderPen /></NavLink>
                         </div>
 
                         <div className="box text-center border p-5 rounded">

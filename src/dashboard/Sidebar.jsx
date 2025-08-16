@@ -2,10 +2,11 @@ import { FaRegUser } from 'react-icons/fa';
 import { IoHomeOutline, IoSettingsOutline } from 'react-icons/io5';
 import { NavLink } from 'react-router-dom';
 import { GiChaingun } from "react-icons/gi";
-import { FaRegNoteSticky } from 'react-icons/fa6';
 import { HiOutlineUserGroup } from "react-icons/hi";
 import { IoIosArrowDropleft } from "react-icons/io";
 import { useState } from 'react';
+import { TbTimelineEvent } from "react-icons/tb";
+import { FaRegHandshake } from "react-icons/fa";
 
 export default function Sidebar({ adminData }) {
 
@@ -35,6 +36,16 @@ export default function Sidebar({ adminData }) {
       name: "Profile",
       link: "profile",
       icon: <FaRegUser />
+    },
+    {
+      name: "Events",
+      link: "Events",
+      icon: <TbTimelineEvent />
+    },
+    {
+      name: "Match making",
+      link: "CreateMatchmaking",
+      icon: <FaRegHandshake  />
     }
   ];
 

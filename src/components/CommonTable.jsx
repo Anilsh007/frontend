@@ -5,7 +5,7 @@ export default function CommonTable({
   data = [],
   title,
   showCheckbox = false,
-  onRowSelect = () => {},
+  onRowSelect = () => { },
   selectedRows = [],
   className = "",
 }) {
@@ -27,6 +27,14 @@ export default function CommonTable({
 
     onRowSelect(updatedSelection);
   };
+
+  const formatValue = (val) => {
+    if (typeof val === "string" && val.match(/^\d{2}:\d{2}:\d{2}\.\d+$/)) {
+      return val.split(".")[0]; // remove microseconds
+    }
+    return val;
+  };
+
 
   return (
     <div className={`mt-4 table-responsive ${className}`}>
@@ -82,7 +90,7 @@ export default function CommonTable({
                     return (
                       <td key={col.key}>
                         {rawValue ? (
-                          <img src={rawValue} alt={rawValue} className="table_img"/>
+                          <img src={rawValue} alt={rawValue} className="table_img" />
                         ) : (
                           "N/A"
                         )}
@@ -111,9 +119,9 @@ export default function CommonTable({
                   return (
                     <td key={col.key}>
                       {rawValue !== null &&
-                      rawValue !== undefined &&
-                      rawValue !== ""
-                        ? String(rawValue)
+                        rawValue !== undefined &&
+                        rawValue !== ""
+                        ? String(formatValue(rawValue))
                         : "—"}
                     </td>
                   );

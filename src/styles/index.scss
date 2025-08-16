@@ -2,12 +2,16 @@ body {
     padding: 0;
     margin: 0;
     font-family: sans-serif;
+    font-size: 15px;
 }
 
 // App_header css
 .App_header {
     background: #116aef;
-    position: sticky;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 99;
 
     .navbar {
         padding: 0;
@@ -19,13 +23,15 @@ body {
 
             .logo-div {
                 img {
-                    width: 170px;
+                    max-width: 170px;
+                    height: 65px;
                     filter: brightness(200) contrast(100);
                     padding: 10px 0;
+                    filter: drop-shadow(0 0 5px #000);
                 }
             }
 
-            ul {
+            .navbar-nav {
                 list-style: none;
                 display: flex;
                 line-height: normal;
@@ -42,18 +48,28 @@ body {
                         display: block;
                         transition: 0.5s all;
                         margin: auto;
-                        border: navajowhite;
                         background: #f0f8ff00;
 
                         &:hover {
-                            background-color: #000 !important;
                             transition: 0.5s all;
+                            border-bottom: 5px solid #000;
                         }
                     }
                 }
             }
         }
+
+        .active-menu {
+            // background-color: #000 !important;
+            transition: 0.5s all;
+            border-bottom: 5px solid #000;
+
+        }
     }
+}
+
+main {
+    margin-top: 12.4vh;
 }
 
 // About page styles
@@ -61,12 +77,13 @@ body {
     background-image: url('../assets/home_baner.jpg');
     background-size: cover;
     background-position: center;
-    height: 60vh;
+    height: 30vh;
+    background-repeat: no-repeat;
 }
 
-.hero-section h1,
+.hero-section h3,
 .hero-section p {
-    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.6);
+    text-shadow: 0px 0px 5px #000;
     color: black;
 }
 
@@ -104,42 +121,14 @@ body {
     }
 }
 
-@keyframes bgPulse {
-    0% {
-        background-color: #ffe3f9;
-    }
-
-    /* light pink */
-    25% {
-        background-color: #dcfaff;
-    }
-
-    /* light blue */
-    50% {
-        background-color: #d1ffd1;
-    }
-
-    /* light green */
-    75% {
-        background-color: #fff9d4;
-    }
-
-    /* light yellow */
-    100% {
-        background-color: #ffe3f9;
-    }
-
-    /* match 0% for smooth loop */
-}
-
-.bg-pulse {
-    animation: bgPulse 10s ease-in-out infinite;
-}
-
 .vendor-baner {
     height: 300px !important;
     width: 100%;
     background-repeat: no-repeat;
+}
+
+.VendorDetailPage{
+    margin-top: 12vh;
 }
 
 .clientTable {
@@ -165,72 +154,22 @@ body {
     }
 }
 
-.LRbox {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: stretch;
-    padding: 60px;
 
-    .box {
-        background: linear-gradient(var(--bs-warning-border-subtle), var(--bs-danger-bg-subtle));
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-        padding: 30px;
-        border-radius: 10px;
-        width: 400px;
-        text-align: center;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-
-    .box h3 {
-        margin-bottom: 20px;
-    }
-
-    .box label {
-        display: block;
-        text-align: left;
-        margin: 10px 0 5px;
-        font-weight: bold;
-    }
-
-    .forgot-password {
-        margin-top: 10px;
-        display: block;
-        font-size: 0.9em;
-        color: #000000;
-        text-decoration: underline;
-    }
-
-    .forgot-password:hover {
-        color: rgb(0, 0, 0);
-    }
-}
-
-// commonLogin styles
-.commonLogin {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    height: 92vh;
-    background-color: #f8f9fa;
-
-    img {
-        width: 200px;
-    }
-
-    .loginForm {
-        background: linear-gradient(var(--bs-warning-border-subtle), var(--bs-danger-bg-subtle));
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-        padding: 50px;
-        border-radius: 10px;
-        width: 400px;
-    }
-}
 
 // footer styles
-.footerLogo{
+.footerLogo {
     width: 200px;
     filter: brightness(200) contrast(100);
     margin-bottom: 20px;
+}
+
+// glass card styles
+.glass-card {
+    backdrop-filter: blur(6px);
+    background-color: rgba(255, 255, 255, 0.8);
+    transition: transform 0.3s ease;
+}
+
+.glass-card:hover {
+    transform: translateY(-5px);
 }

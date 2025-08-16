@@ -1,77 +1,63 @@
-/* css for loginRegister */
-.loginRegister {
-    background-image: linear-gradient(to top left, var(--bs-info-bg-subtle), var(--bs-warning-bg-subtle));
-    padding-bottom: 70px;
+// Login and Register styles
+.LRbox {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: stretch;
+    padding: 60px;
 
-    .logo-div {
-        position: absolute;
-        background-color: #0000009c;
-        width: 100%;
-        padding: 10px;
-
-        img {
-            width: 50px;
-        }
-    }
-
-    .vendor_baner {
-        width: -webkit-fill-available;
-    }
-
-    .form-div {
-        background-image: linear-gradient(to top left, var(--bs-info-bg-subtle), var(--bs-warning-bg-subtle));
-        padding: 40px 50px;
-        width: 70%;
-        margin: auto;
-        box-shadow: 0 0 10px 0 #afafaf;
-        border-radius: 20px;
-
-        h6 {
-            margin: 85px 0;
-        }
-
-        .btn {
-            border-radius: 100px;
-        }
-    }
-
-    .LRContainer {
-        box-shadow: 0 0 10px 0 #999;
+    .box {
+        background: linear-gradient(var(--bs-warning-border-subtle), var(--bs-danger-bg-subtle));
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        padding: 30px;
         border-radius: 10px;
-        width: 450px;
-        background-color: #f6f5ff;
+        width: 400px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .box h3 {
+        margin-bottom: 20px;
+    }
+
+    .box label {
+        display: block;
+        text-align: left;
+        margin: 10px 0 5px;
+        font-weight: bold;
+    }
+
+    .forgot-password {
+        margin-top: 10px;
+        display: block;
+        font-size: 0.9em;
+        color: #000000;
+        text-decoration: underline;
+    }
+
+    .forgot-password:hover {
+        color: rgb(0, 0, 0);
+    }
+}
+
+// commonLogin styles
+.commonLogin {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10vh 0;
+    background-color: #f8f9fa;
+
+    img {
+        width: 200px;
+    }
+
+    .loginForm {
+        background: linear-gradient(var(--bs-warning-border-subtle), var(--bs-danger-bg-subtle));
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         padding: 50px;
-
-        .btns {
-            text-align: center;
-
-            button {
-                background-color: #fff;
-                border: none;
-                width: 100px;
-                padding: 10px;
-                cursor: pointer;
-
-                &:hover {
-                    background-color: #FFD700;
-                }
-
-                &:first-child {
-                    box-shadow: 0px 0 10px 0 #999;
-                    border-top-left-radius: 10px;
-                    border-bottom-left-radius: 10px;
-                }
-
-                &:last-child {
-                    box-shadow: 7px 0 10px 0 #999;
-                    border-top-right-radius: 10px;
-                    border-bottom-right-radius: 10px;
-                }
-            }
-
-            .active-btn {
-                background-color: #FFD700;
-            }
-        }
+        border-radius: 10px;
+        width: 400px;
     }
 }

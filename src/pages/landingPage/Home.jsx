@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Header from "../../components/Header";
-import 'aos/dist/aos.css';
-import Footer from "./Footer";
+
+import Footer from "../../components/Footer";
 
 export default function Home() {
     return (

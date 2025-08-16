@@ -2,3 +2,26 @@
 @use './dashboard.scss';
 @use './global.scss';
 @use './index.scss';
+
+
+@keyframes bgPulse {
+  0% {
+    background-color: #e2dff6; /* soft violet-gray */
+  }
+  25% {
+    background-color: #d0ebf5; /* soft bluish */
+  }
+  50% {
+    background-color: #d8f1dc; /* soft mint green */
+  }
+  75% {
+    background-color: #faf3c6; /* pastel yellow with warmth */
+  }
+  100% {
+    background-color: #e2dff6;
+  }
+}
+
+.bg-pulse {
+  animation: bgPulse 25s ease-in-out infinite;
+}

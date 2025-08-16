@@ -5,6 +5,7 @@ import API_BASE_URL from "../../config/Api";
 import CommonForm from '../../components/CommonForm';
 import statesJson from "../../components/states.json"; // adjust path if needed
 import QandA from "../../components/QandA"; // adjust path if needed
+import { GrUpdate } from "react-icons/gr";
 
 
 export default function VendorDetail() {
@@ -126,19 +127,18 @@ export default function VendorDetail() {
 
     return (
         <>
-            <Header getClientId={ClientId}/>
-            <div>
+            <Header getClientId={ClientId} />
+            <div className="VendorDetailPage">
                 {clientData && (
                     <>
-                        <div className="p-3 bg-light border rounded">
-                            <div className="d-flex">
-                                <div>
+                        <div className="p-3 bg-light border">
+                            <div className="row">
+                                <div className="col-md-2 text-center">
                                     <img src={`https://api.cvcsem.com/uploads${clientData.companylogo}`} alt="Logo" className="img-fluid vendor-profile" />
                                     <p className="m-0">{clientData.ClientId}</p>
                                     <p className="m-0">{clientData.CompanyName}</p>
-                                    <p className="m-0">{clientData.FirstName} {clientData.LastName}</p>
                                 </div>
-                                <div className="ms-3">
+                                <div className="col-md-10">
                                     <p className="m-0">{clientData.AboutUs}</p>
                                 </div>
                             </div>
@@ -218,9 +218,14 @@ export default function VendorDetail() {
                             </div>
                         </div>
 
-                        <button className="btn btn-outline-primary mt-3" onClick={() => setShowModal(true)}>
-                            Update Detail
-                        </button>
+                        <div className="d-flex justify-content-end mt-3">
+                            <button
+                                className="btn btn-outline-primary"
+                                onClick={() => setShowModal(true)}
+                            >
+                                Update Detail <GrUpdate />
+                            </button>
+                        </div>
                     </>
                 )}
 

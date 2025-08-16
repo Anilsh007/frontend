@@ -1,12 +1,15 @@
 .dashboard-layout {
   display: flex;
+  margin-top: 12.6vh;
+  /* Adjusted to match the header height */
+  height: calc(100vh - 12.6vh);
+  /* Full height minus header */
 }
 
 
 // css for sidebar
 .sidebar {
   position: relative;
-  height: 92vh;
   background-color: #fff;
   color: #000;
   box-shadow: 5px 0 10px #c9c9c9;
@@ -145,7 +148,6 @@
   flex-grow: 1;
   padding: 1rem;
   overflow: auto;
-  height: 92vh;
 }
 
 // css for dh_baner
@@ -206,4 +208,27 @@
       margin-right: -7px;
     }
   }
+}
+
+// css for tags-input
+.tags-input {
+  display: flex;
+  overflow-x: scroll;
+  height: 50px;
+  border: 1px solid #dee2e6;
+  padding: 4px 2px;
+  gap: 5px;
+  border-radius: 5px;
+  margin-top: 5px;
+
+  .custom-badge {
+    display: flex;
+    margin: 0 3px;
+  }
+}
+
+// matchmaking
+.custom-div{
+  margin-top: 11.9vh;
+  padding: 4vh 0;
 }

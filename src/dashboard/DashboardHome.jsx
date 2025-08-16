@@ -13,8 +13,6 @@ export default function DashboardHome() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  console.log("Dashboard Home Admin Data:", getAdminDetails.Type);
-
   const hours = new Date().getHours();
   const greet = hours < 12 ? "Good Morning" : hours < 18 ? "Good Afternoon" : "Good Evening";
 
@@ -72,7 +70,7 @@ export default function DashboardHome() {
   return (
     <div className='bg-gredient'>
       <div className="row">
-        <div className="col-xxl-6 col-sm-6 col-lg-6 col-md-12">
+        <div className="col-xxl-10 col-sm-10 col-lg-10 col-md-12">
           <div className="py-4 px-5">
             <h6>{greet},</h6>
             <h2>{getAdminDetails.FirstName} {getAdminDetails.LastName}</h2>
@@ -110,7 +108,7 @@ export default function DashboardHome() {
             )}
           </div>
         </div>
-        <div className="col-xxl-6 col-sm-6 col-lg-6 col-md-12 text-center">
+        <div className="col-xxl-2 col-sm-2 col-lg-2 col-md-12 text-center">
           <img src={dashboard_icon} alt="dashboard icon" className="dashboard_icon img-fluid" />
         </div>
       </div>
