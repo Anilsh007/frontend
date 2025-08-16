@@ -7,13 +7,12 @@ export default function Header({ clientLogo, passClientId, getClientId, onLoginS
   const location = useLocation();
   const path = location.pathname;
 
-  // Safe parsing of user data
+  // ---------------- Safe User Parse ----------------
   let user = null;
   try {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
       const parsed = JSON.parse(storedUser);
-      // Only allow expected fields
       if (parsed.type !== undefined && parsed.fullName && parsed.clientId) {
         user = parsed;
       }
@@ -31,18 +30,16 @@ export default function Header({ clientLogo, passClientId, getClientId, onLoginS
     }
   }, [isLoggedIn, onLoginStatusChange]);
 
-  // Safe clientId fallback
   const safeClientId = passClientId || getClientId || null;
 
   const handleLogout = (e) => {
     e.preventDefault();
     localStorage.removeItem('user');
-    // Prevent open redirect
     const safePath = safeClientId ? `/cvcsem/${encodeURIComponent(safeClientId)}` : '/';
     navigate(safePath, { replace: true });
   };
 
-  // ------------------ Menu Definitions ------------------
+  // ---------------- Menus ----------------
   const homeMenu = [
     { name: 'Home', link: '/' },
     { name: 'Testimonials', link: '/testimonials' },
@@ -59,7 +56,7 @@ export default function Header({ clientLogo, passClientId, getClientId, onLoginS
 
   const VendorDetailMenu = [...vendorMenuBase, { name: 'Logout', onClick: handleLogout }];
   const VendorDetailOutSide = [...vendorMenuBase, { name: 'Login', link: '/login' }];
-  
+
   const adminMenu = [
     { name: 'Link 1', link: '/' },
     { name: 'link 2', link: '/' },
@@ -67,25 +64,30 @@ export default function Header({ clientLogo, passClientId, getClientId, onLoginS
     { name: 'Logout', onClick: handleLogout },
   ];
 
-  // ------------------ Determine Slab ------------------
-  let slab = 'home';
-  if (path.startsWith('/dashboard')) slab = 'dashboard';
-  else if (/^\/cvcsem\/[^/]+$/.test(path) || path.startsWith('/vendorsRegister') || path.startsWith('/MyMatchMaking') || path.startsWith('/QuickVendorsRegister') || path.startsWith('/BookMatchMaking')) slab = 'vendor';
+  // ---------------- Slab Shortened ----------------
+  const vendorPaths = [
+    '/vendorsRegister',
+    '/MyMatchMaking',
+    '/QuickVendorsRegister',
+    '/VendorDetail',
+    '/BookMatchMaking',
+  ];
 
-  // ------------------ Determine Menu ------------------
-  let menuToRender = homeMenu;
-  switch (slab) {
-    case 'dashboard':
-      menuToRender = adminMenu;
-      break;
-    case 'vendor':
-      menuToRender = user ? VendorDetailMenu : VendorDetailOutSide;
-      break;
-    default:
-      menuToRender = homeMenu;
-  }
+  const slab = path.startsWith('/dashboard')
+    ? 'dashboard'
+    : /^\/cvcsem\/[^/]+$/.test(path) || vendorPaths.some(p => path.startsWith(p))
+      ? 'vendor'
+      : 'home';
 
-  // ------------------ Render ------------------
+  // ---------------- Menu Decide ----------------
+  const menuToRender =
+    slab === 'dashboard'
+      ? adminMenu
+      : slab === 'vendor'
+        ? (user ? VendorDetailMenu : VendorDetailOutSide)
+        : homeMenu;
+
+  // ---------------- Render ----------------
   return (
     <header className="App_header">
       <nav className="navbar navbar-expand-sm navbar-dark">

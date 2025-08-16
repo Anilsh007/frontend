@@ -44,6 +44,8 @@ export default function BookMatchMaking() {
         }
     }, []);
 
+    console.log("User in BookMatchMaking:", user.clientId);
+
 
     const start = parseTime(eventDetails.startTime);
     const end = parseTime(eventDetails.endTime);
@@ -139,7 +141,7 @@ export default function BookMatchMaking() {
 
     return (
         <>
-            <Header />
+            <Header  passClientId={user.clientId}/>
             <div className="container custom-div">
                 <div className="d-flex justify-content-between align-items-center mb-4">
                     <div><h5>Welcome {user.fullName}!</h5></div>
